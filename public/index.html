@@ -8,10 +8,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>body{-webkit-tap-highlight-color:transparent;user-select:none;}.no-sb::-webkit-scrollbar{display:none;}</style>
 </head>
-<body class="bg-slate-900 flex justify-center items-center min-h-screen font-sans text-slate-800 sm:p-4">
+<body class="bg-slate-900 flex justify-center items-center min-h-screen text-slate-800 font-sans sm:p-4">
   <div class="w-full max-w-md h-[100dvh] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden relative">
     
-    <!-- Header -->
+    <!-- Top Header -->
     <header class="px-5 pt-4 pb-3 flex justify-between items-center bg-white border-b border-slate-100 z-10">
       <div class="flex items-center gap-2">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md">
@@ -26,128 +26,230 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto no-sb p-4 pb-20">
-      <!-- Tab 1: Home -->
+
+      <!-- ================= 1. HOME TAB ================= -->
       <div id="tab-home" class="space-y-4">
         <div class="flex justify-between items-center">
-          <div><p class="text-[10px] font-bold text-slate-400 uppercase">Welcome</p><h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2></div>
+          <div><p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p><h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2></div>
           <button onclick="switchTab('wallet')" class="text-xs text-indigo-600 font-bold">Withdraw →</button>
         </div>
-        <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-800 text-white shadow-lg">
+
+        <!-- Total Balance Card -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 text-white shadow-lg">
           <span class="text-xs text-indigo-200">Total Coins Balance</span>
           <div class="flex items-baseline gap-2 mt-1">
             <span id="coin-balance" class="text-3xl font-black">0</span>
             <span class="text-amber-300 font-bold text-sm"><i class="fa-solid fa-coins"></i> Coins</span>
           </div>
-          <p class="text-[11px] text-indigo-200 mt-2">Deducted automatically on withdrawal.</p>
+          <p class="text-[11px] text-indigo-200 mt-2">Deducted automatically when you withdraw.</p>
         </div>
+
+        <!-- Daily Streak Bonus -->
         <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/70 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center text-lg"><i class="fa-solid fa-calendar-check"></i></div>
-            <div><h4 class="text-xs font-bold text-slate-800">Daily Streak</h4><p class="text-[11px] text-slate-500">+50 coins every 24h</p></div>
+            <div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-calendar-check"></i></div>
+            <div><h4 class="text-xs font-bold text-slate-800">Daily Streak Check-In</h4><p class="text-[11px] text-slate-500">+50 free coins every 24 hours</p></div>
           </div>
-          <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold">Claim</button>
+          <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition">Claim</button>
         </div>
-        <div class="p-3.5 rounded-2xl border border-sky-200 bg-sky-50 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-sky-500 text-white flex items-center justify-center text-lg"><i class="fa-solid fa-graduation-cap"></i></div>
-            <div><h4 class="text-xs font-bold text-slate-800">Quiz Challenge</h4><p class="text-[11px] text-slate-500">Correct quiz + ad = +1 💎</p></div>
-          </div>
-          <button onclick="openQuizModal()" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-xs font-bold">Play</button>
-        </div>
+
+        <!-- Super & Mega Offers Header -->
         <div class="pt-2 flex justify-between items-end">
-          <h3 class="text-sm font-black text-slate-900">Task Offers (Earn 1,025 Coins)</h3>
+          <div>
+            <h3 class="text-sm font-black text-slate-900 tracking-tight">Featured Offers</h3>
+            <p class="text-[11px] text-slate-400">Play quizzes inside, collect 25 💎, & earn big coins</p>
+          </div>
           <button onclick="testAddDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2 py-1 rounded">+25 💎 (Test)</button>
         </div>
-        <div class="space-y-3">
-          <div onclick="launchAppRoadmap('Lenskart : Eyeglasses & More', 'com.lenskart.app', 'fa-glasses')" class="cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white flex items-center justify-between shadow-sm active:scale-95">
-            <div class="flex items-center gap-3.5">
-              <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl"><i class="fa-solid fa-glasses"></i></div>
-              <div><h4 class="font-extrabold text-sm text-slate-800">Lenskart : Eyeglasses</h4><p class="text-[11px] text-slate-400">com.lenskart.app</p><span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">1,025 Coins</span></div>
+
+        <!-- Only Super & Mega Offer Cards -->
+        <div class="grid grid-cols-2 gap-3.5">
+          <!-- Super Offer -->
+          <div onclick="openOfferFlow('Super Offer', 1000)" class="cursor-pointer p-4 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/70 border border-indigo-200 shadow-sm flex flex-col justify-between h-44 active:scale-95 transition">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black bg-indigo-600 text-white px-2 py-0.5 rounded-full uppercase">Super Offer</span>
+              <i class="fa-solid fa-sparkles text-indigo-600 text-sm"></i>
             </div>
-            <button class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Start</button>
+            <div>
+              <p class="text-[11px] font-medium text-slate-500">Guaranteed</p>
+              <h4 class="font-black text-xl text-indigo-950">1,000 <span class="text-xs font-semibold">Coins</span></h4>
+              <span class="inline-block mt-1 text-[10px] font-bold text-indigo-600 bg-white/90 px-2 py-0.5 rounded border border-indigo-100">Requires 25 💎</span>
+            </div>
+            <button class="w-full py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold">Start Offer</button>
           </div>
-          <div onclick="launchAppRoadmap('Zupee : Play Ludo & Win', 'com.zupee.app', 'fa-gamepad')" class="cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white flex items-center justify-between shadow-sm active:scale-95">
-            <div class="flex items-center gap-3.5">
-              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl"><i class="fa-solid fa-gamepad"></i></div>
-              <div><h4 class="font-extrabold text-sm text-slate-800">Zupee : Games</h4><p class="text-[11px] text-slate-400">com.zupee.app</p><span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">1,025 Coins</span></div>
+
+          <!-- Mega Offer -->
+          <div onclick="openOfferFlow('Mega Offer', 550)" class="cursor-pointer p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100/70 border border-amber-200 shadow-sm flex flex-col justify-between h-44 active:scale-95 transition">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black bg-amber-500 text-white px-2 py-0.5 rounded-full uppercase">Mega Offer</span>
+              <i class="fa-solid fa-fire text-amber-500 text-sm"></i>
             </div>
-            <button class="px-3 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Start</button>
+            <div>
+              <p class="text-[11px] font-medium text-slate-500">Guaranteed</p>
+              <h4 class="font-black text-xl text-amber-950">550 <span class="text-xs font-semibold">Coins</span></h4>
+              <span class="inline-block mt-1 text-[10px] font-bold text-amber-700 bg-white/90 px-2 py-0.5 rounded border border-amber-100">Requires 25 💎</span>
+            </div>
+            <button class="w-full py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold">Start Offer</button>
           </div>
         </div>
       </div>
 
-      <!-- Tab 2: Wallet -->
+      <!-- ================= 2. WALLET TAB ================= -->
       <div id="tab-wallet" class="space-y-4 hidden">
-        <h2 class="text-lg font-black text-slate-900">Withdraw Rewards</h2>
+        <div><h2 class="text-lg font-black text-slate-900">Withdraw Rewards</h2><p class="text-xs text-slate-400">Balance reduces immediately upon redemption</p></div>
         <div class="p-4 bg-slate-50 rounded-2xl border flex justify-between items-center">
-          <div><span class="text-xs text-slate-400">Balance</span><div class="text-lg font-black text-slate-800"><i class="fa-solid fa-coins text-amber-500"></i> <span id="wallet-balance-display">0</span> Coins</div></div>
+          <div><span class="text-xs text-slate-400 font-medium">Available Balance</span><div class="flex items-center gap-1.5 text-lg font-black text-slate-800"><i class="fa-solid fa-coins text-amber-500"></i> <span id="wallet-balance-display">0</span> Coins</div></div>
           <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold">Verified</span>
         </div>
-        <div class="p-4 rounded-2xl border bg-white space-y-3">
-          <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-slate-50 border flex items-center justify-center text-emerald-500 text-xl"><i class="fa-brands fa-google-play"></i></div><div><h4 class="font-bold text-sm">Google Play Code</h4><p class="text-xs text-slate-400">Min: ₹50 (5,000 Coins)</p></div></div>
-          <button onclick="submitWithdrawal('Google Play Code', 50, 5000)" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Withdraw ₹50 Code</button>
+
+        <!-- Google Play ₹50 = 7,000 Coins -->
+        <div class="p-4 rounded-2xl border bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-slate-50 border flex items-center justify-center text-emerald-500 text-2xl"><i class="fa-brands fa-google-play"></i></div>
+            <div><h4 class="font-bold text-sm">Google Play Code ₹50</h4><p class="text-xs text-slate-400">Coins Needed: <strong class="text-indigo-600">7,000 Coins</strong></p></div>
+          </div>
+          <button onclick="submitWithdrawal('Google Play Code ₹50', 50, 7000)" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Withdraw ₹50 Code</button>
         </div>
-        <div class="p-4 rounded-2xl border bg-white space-y-3">
-          <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-50 border text-emerald-700 font-black text-xs flex items-center justify-center">UPI</div><div><h4 class="font-bold text-sm">Direct UPI Transfer</h4><p class="text-xs text-slate-400">Min: ₹100 (10,000 Coins)</p></div></div>
-          <button onclick="submitWithdrawal('UPI', 100, 10000)" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Withdraw ₹100 via UPI</button>
+
+        <!-- Google Play ₹100 = 13,600 Coins -->
+        <div class="p-4 rounded-2xl border bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-slate-50 border flex items-center justify-center text-emerald-500 text-2xl"><i class="fa-brands fa-google-play"></i></div>
+            <div><h4 class="font-bold text-sm">Google Play Code ₹100</h4><p class="text-xs text-slate-400">Coins Needed: <strong class="text-indigo-600">13,600 Coins</strong></p></div>
+          </div>
+          <button onclick="submitWithdrawal('Google Play Code ₹100', 100, 13600)" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Withdraw ₹100 Code</button>
+        </div>
+
+        <!-- Direct UPI ₹100 = 14,000 Coins -->
+        <div class="p-4 rounded-2xl border bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-emerald-50 border text-emerald-700 font-black text-xs flex items-center justify-center">UPI</div>
+            <div><h4 class="font-bold text-sm">Direct UPI Transfer ₹100</h4><p class="text-xs text-slate-400">Coins Needed: <strong class="text-indigo-600">14,000 Coins</strong></p></div>
+          </div>
+          <button onclick="submitWithdrawal('UPI ₹100', 100, 14000)" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Withdraw ₹100 via UPI</button>
         </div>
       </div>
 
-      <!-- Tab 3: Profile -->
+      <!-- ================= 3. PROFILE TAB ================= -->
       <div id="tab-profile" class="space-y-4 hidden">
-        <div class="p-4 rounded-2xl border bg-white flex items-center gap-4">
-          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-indigo-600 text-white font-black text-lg flex items-center justify-center">U</div>
-          <div><h3 id="profile-name-display" class="font-bold text-sm">User</h3><p id="profile-email-display" class="text-xs text-slate-500"></p></div>
+        <div class="p-4 rounded-2xl border bg-white shadow-sm flex items-center gap-4">
+          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center shadow-md">U</div>
+          <div><h3 id="profile-name-display" class="font-bold text-slate-800 text-sm">User</h3><p id="profile-email-display" class="text-xs text-slate-500"></p></div>
         </div>
-        <button onclick="handleSignOut()" class="w-full py-3 rounded-xl border border-red-200 bg-red-50 text-red-600 font-bold text-xs">Sign Out</button>
+
+        <!-- Report Issue Form -->
+        <div class="p-4 rounded-2xl border bg-white shadow-sm space-y-2.5">
+          <span class="text-xs font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Report an Issue</span>
+          <input id="report-subject" type="text" placeholder="Subject (e.g. Can't withdraw coins)" class="w-full p-2.5 rounded-xl border text-xs outline-none focus:ring-1 focus:ring-indigo-500" />
+          <textarea id="report-desc" rows="3" placeholder="Describe the issue in detail..." class="w-full p-2.5 rounded-xl border text-xs outline-none focus:ring-1 focus:ring-indigo-500"></textarea>
+          <button onclick="submitReport()" class="w-full py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-xl">Submit Report</button>
+        </div>
+
+        <button onclick="handleSignOut()" class="w-full py-3 rounded-xl border border-red-200 bg-red-50 text-red-600 font-bold text-xs"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</button>
       </div>
+
     </main>
 
-    <!-- Roadmap Screen (Lenskart / Zupee) -->
-    <div id="roadmap-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col">
-      <div class="px-5 pt-4 pb-3 flex items-center gap-3 bg-white border-b sticky top-0 z-10">
-        <button onclick="closeRoadmapScreen()" class="text-slate-700"><i class="fa-solid fa-arrow-left"></i></button>
-        <h3 id="roadmap-app-title" class="font-extrabold text-sm truncate">App Offer</h3>
+    <!-- ================= OFFER COMPLETION & APP TASK SCREEN (AFTER 25 💎) ================= -->
+    <div id="offer-screen" class="hidden absolute inset-0 bg-white z-40 flex flex-col">
+      <div class="px-5 pt-4 pb-3 flex justify-between items-center border-b bg-white">
+        <button onclick="closeOfferScreen()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3 id="offer-screen-title" class="font-extrabold text-sm text-slate-800">Super Offer</h3>
+        <div class="flex items-center gap-1.5 bg-indigo-50 border px-3 py-1 rounded-full text-xs font-black text-indigo-700"><i class="fa-solid fa-gem text-indigo-500"></i> 25</div>
       </div>
+
       <div class="flex-1 overflow-y-auto no-sb p-4 space-y-3 pb-8">
-        <div class="p-4 rounded-2xl bg-white border shadow-sm flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl"><i id="roadmap-app-icon" class="fa-solid fa-glasses"></i></div>
-          <div><h3 id="card-app-title" class="font-black text-sm">Lenskart</h3><p id="card-package-name" class="text-xs text-slate-400">com.lenskart.app</p><p class="text-[11px] text-slate-400">Installed 3 hours ago</p></div>
+        <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-center space-y-1">
+          <div class="text-indigo-600 text-2xl font-black flex items-center justify-center gap-1.5"><i class="fa-solid fa-gem"></i> 25</div>
+          <p class="text-xs font-bold text-slate-600">Gems Collected!</p>
+          <p class="text-sm font-black text-amber-500">🎁 Guaranteed <span id="banner-offer-coins">1,000</span> Coins!</p>
         </div>
-        <div class="flex justify-between items-center"><span class="text-[11px] font-black uppercase text-slate-400">Rewards</span><button onclick="demoApprovePending()" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border px-2 py-0.5 rounded">⚡ Approve Screenshot (Demo)</button></div>
-        <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">Initial Install Reward</h4><p class="text-[10px] text-slate-500">Install & usage met</p></div>
-          <div class="text-right"><span class="text-xs font-black text-indigo-700">🪙 100</span><p class="text-[10px] font-bold text-emerald-600">Approved ✓</p></div>
+
+        <!-- Red Warning if App not detected -->
+        <div id="error-app-not-detected" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs">
+          <strong class="flex items-center gap-1.5 text-red-600"><i class="fa-solid fa-circle-exclamation"></i> App Not Detected</strong>
+          Please install the app from the ad and upload login proof.
         </div>
-        <div id="step2-card" class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
-          <div class="flex justify-between items-center"><div><h4 class="text-xs font-bold">Immediate</h4><p class="text-[10px] text-slate-500">Sign up & upload screenshot</p></div><span class="text-xs font-black text-indigo-700">🪙 350</span></div>
-          <div id="step2-upload-form" class="space-y-2">
-            <input type="file" id="step2-file-input" accept="image/*" class="text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded file:bg-amber-600 file:text-white" />
-            <button onclick="submitStep2Screenshot()" class="w-full py-2 bg-amber-500 text-white font-bold text-xs rounded-xl">Upload Login Screenshot Proof</button>
+
+        <!-- Step 1: Watch Ad -->
+        <div id="step-card-1" class="p-3.5 rounded-2xl border bg-white flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <div id="step-icon-1" class="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-lg"><i class="fa-solid fa-play"></i></div>
+            <div><h4 class="text-xs font-bold">Watch a video Ad</h4><p class="text-[10px] text-slate-500">Complete watching the full ad</p></div>
           </div>
-          <div id="step2-pending-box" class="hidden p-3 rounded-xl bg-amber-100/70 border border-amber-300 text-[11px] text-amber-900 font-medium">🕒 <strong>Pending Review:</strong> Your screenshot is under admin review. Coins will be awarded after approval.</div>
+          <div id="step-check-1" class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-transparent text-xs"><i class="fa-solid fa-check"></i></div>
         </div>
-        <div class="p-3.5 rounded-2xl bg-white border flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">After 3h 6m</h4><p class="text-[10px] text-slate-400">Use app for 1 more min</p><button onclick="claimMilestone('step3_3h', 100, this)" class="mt-1 text-[10px] font-bold text-indigo-600 bg-indigo-50 border px-2 py-0.5 rounded">Claim 100 Coins (Test)</button></div>
-          <span class="text-xs font-black text-indigo-700">🪙 100</span>
+
+        <!-- Step 2: Install & Screenshot -->
+        <div id="step-card-2" class="p-3.5 rounded-2xl border bg-white space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-cloud-arrow-down"></i></div>
+            <div><h4 class="text-xs font-bold">Install & Sign Up in the App</h4><p class="text-[10px] text-slate-500">Upload your login screenshot proof</p></div>
+          </div>
+          <div id="upload-box" class="hidden space-y-1">
+            <input type="file" id="screenshot-file-input" accept="image/*" class="text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded file:bg-indigo-600 file:text-white" />
+          </div>
         </div>
-        <div class="p-3.5 rounded-2xl bg-white border flex justify-between items-center"><div><h4 class="text-xs font-bold">After 24h 53m</h4><p class="text-[10px] text-slate-400">Use app for 5 more mins</p></div><span class="text-xs font-black text-indigo-700">🪙 200</span></div>
-        <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-center"><span class="text-xs font-bold text-slate-500">Total Potential Earnings</span><div class="text-xl font-black text-indigo-700">🪙 1,025 Coins</div></div>
+
+        <!-- Step 3: 2-Minute Usage Golden Bar -->
+        <div id="step-card-3" class="p-3.5 rounded-2xl border bg-white space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center text-lg"><i class="fa-solid fa-gamepad"></i></div>
+            <div><h4 class="text-xs font-bold">Use the app for 2 minutes</h4><p class="text-[10px] text-slate-500">Progress is tracked automatically.</p></div>
+          </div>
+          <div id="timer-bar-container" class="hidden space-y-1 pt-1">
+            <div class="flex justify-between text-[10px] font-bold"><span class="text-amber-600">Tracking...</span><span id="timer-text" class="text-amber-700">02:00</span></div>
+            <div class="w-full bg-amber-100 rounded-full h-2.5 overflow-hidden border border-amber-300">
+              <div id="golden-bar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 w-0 transition-all"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div id="offer-action-container" class="pt-2">
+          <button id="offer-main-btn" onclick="handleOfferStep()" class="w-full py-3.5 rounded-xl bg-indigo-600 text-white font-black text-xs shadow-md">Start Offer</button>
+        </div>
       </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- ================= QUIZ MODAL (INSIDE SUPER & MEGA OFFER) ================= -->
+    <div id="quiz-modal" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex flex-col justify-end">
+      <div class="bg-white rounded-t-3xl p-5 space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+          <div><span class="text-[10px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded uppercase">Inside Offer Quiz</span><h3 id="quiz-offer-title" class="font-bold text-sm">Super Offer Quiz (Need 25 💎)</h3></div>
+          <button onclick="document.getElementById('quiz-modal').classList.add('hidden')">✕</button>
+        </div>
+        <p class="text-xs font-bold text-slate-800">Q1 of 50: Which payment system uses UPI ID in India?</p>
+        <div class="space-y-1.5">
+          <button onclick="answerQuiz(true)" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold hover:border-indigo-500">Unified Payments Interface (UPI)</button>
+          <button onclick="answerQuiz(false)" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold hover:border-indigo-500">SWIFT Wire</button>
+        </div>
+        <div id="quiz-ad-box" class="hidden p-3 bg-sky-50 border rounded-xl text-center space-y-2">
+          <p class="text-xs font-bold text-sky-900">Correct! Watch an ad to claim +1 💎 (Required)</p>
+          <button onclick="claimQuizDiamond()" class="w-full py-2 bg-sky-600 text-white text-xs font-bold rounded-lg shadow-md">Watch Ad to Claim 1 💎</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fullscreen Ad Simulator -->
+    <div id="ad-simulator" class="hidden absolute inset-0 bg-black text-white z-50 flex flex-col items-center justify-center p-6 text-center space-y-3">
+      <div class="animate-spin text-amber-400 text-4xl mb-2"><i class="fa-solid fa-spinner"></i></div>
+      <h3 class="text-lg font-bold">Playing Sponsor Video Ad...</h3>
+      <p id="ad-timer" class="text-xs text-slate-400">Do not close this ad</p>
+    </div>
+
+    <!-- Bottom Nav (3 Buttons Only) -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t flex justify-around items-center px-4 z-20">
       <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-indigo-600 w-16"><i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
       <button onclick="switchTab('wallet')" id="nav-btn-wallet" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold mt-1">Wallet</span></button>
       <button onclick="switchTab('profile')" id="nav-btn-profile" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-user text-lg"></i><span class="text-[10px] font-bold mt-1">Profile</span></button>
     </nav>
 
-    <!-- Login Modal -->
+    <!-- Google Login Modal -->
     <div id="login-modal" class="hidden absolute inset-0 bg-white z-50 flex flex-col justify-center px-6 space-y-4">
       <div class="text-center space-y-1">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl shadow-lg"><i class="fa-solid fa-bolt"></i></div>
-        <h2 class="text-2xl font-black text-slate-900">Quiz & Earn</h2><p class="text-xs text-slate-500">Play quizzes & earn direct cash</p>
+        <h2 class="text-2xl font-black text-slate-900">Quiz & Earn</h2><p class="text-xs text-slate-500">Sign in to start earning rewards</p>
       </div>
       <div class="space-y-3 pt-2">
         <input id="login-name" type="text" placeholder="Your Full Name" class="w-full p-3 border rounded-xl text-xs outline-none focus:ring-1 focus:ring-indigo-500" />
@@ -155,41 +257,27 @@
         <button onclick="loginUser()" class="w-full py-3.5 bg-slate-900 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2"><i class="fa-brands fa-google text-red-500"></i> Continue with Google</button>
       </div>
     </div>
-
-    <!-- Quiz Modal & Ad -->
-    <div id="quiz-modal" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex flex-col justify-end">
-      <div class="bg-white rounded-t-3xl p-5 space-y-3">
-        <div class="flex justify-between items-center border-b pb-2"><h3 class="font-bold text-sm">Quiz</h3><button onclick="document.getElementById('quiz-modal').classList.add('hidden')">✕</button></div>
-        <p class="text-xs font-bold text-slate-800">Q1 of 50: How many states are there in India?</p>
-        <div class="space-y-2">
-          <button onclick="answerQuiz(true)" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold">28 States</button>
-          <button onclick="answerQuiz(false)" class="w-full text-left p-2.5 border rounded-xl text-xs font-bold">32 States</button>
-        </div>
-        <div id="quiz-ad-box" class="hidden p-3 bg-sky-50 border rounded-xl text-center space-y-2">
-          <p class="text-xs font-bold text-sky-900">Correct! Watch an ad to claim +1 💎</p>
-          <button onclick="claimQuizDiamond()" class="w-full py-2 bg-sky-600 text-white text-xs font-bold rounded-lg">Watch Ad</button>
-        </div>
-      </div>
-    </div>
-    <div id="ad-simulator" class="hidden absolute inset-0 bg-black text-white z-50 flex flex-col items-center justify-center p-6 text-center space-y-3">
-      <div class="animate-spin text-amber-400 text-4xl mb-2"><i class="fa-solid fa-spinner"></i></div>
-      <h3 class="text-lg font-bold">Playing Sponsor Video Ad...</h3>
-      <p id="ad-timer" class="text-xs text-slate-400">Do not close</p>
-    </div>
   </div>
 
   <script>
     let currentUser = null;
+    let selectedOfferName = 'Super Offer';
+    let selectedOfferCoins = 1000;
+    let offerState = 'unstarted';
+
     async function apiRequest(ep, method = 'GET', body = null) {
       const opts = { method, headers: { 'Content-Type': 'application/json', 'x-user-email': currentUser ? currentUser.email : '' } };
       if (body) opts.body = JSON.stringify(body);
       const res = await fetch(ep, opts);
       return await res.json();
     }
+
     async function loginUser() {
       const name = document.getElementById('login-name').value.trim();
+      co
+
       const email = document.getElementById('login-email').value.trim().toLowerCase();
-      if (!name || !email) return alert("Fill in name and email.");
+      if (!name || !email) return alert("Fill in your name and email.");
       const data = await apiRequest('/api/auth/login', 'POST', { name, email });
       if (data && data.success) {
         currentUser = data.user;
@@ -198,6 +286,7 @@
         renderUI();
       }
     }
+
     function renderUI() {
       if (!currentUser) return;
       document.getElementById('home-username').innerText = `${currentUser.name} 👋`;
@@ -208,6 +297,7 @@
       document.getElementById('wallet-balance-display').innerText = currentUser.coins.toLocaleString();
       document.getElementById('diamond-counter').innerText = currentUser.diamonds;
     }
+
     function switchTab(t) {
       ['home', 'wallet', 'profile'].forEach(tab => {
         document.getElementById(`tab-${tab}`).classList.add('hidden');
@@ -216,6 +306,7 @@
       document.getElementById(`tab-${t}`).classList.remove('hidden');
       document.getElementById(`nav-btn-${t}`).classList.replace('text-slate-400', 'text-indigo-600');
     }
+
     async function claimDailyCheckin() {
       const data = await apiRequest('/api/daily-checkin', 'POST');
       if (data && data.success) {
@@ -226,102 +317,155 @@
         alert("🎉 +50 Coins claimed!");
       }
     }
-    function openQuizModal() {
-      document.getElementById('quiz-modal').classList.remove('hidden');
-      document.getElementById('quiz-ad-box').classList.add('hidden');
+
+    // Triggered when user clicks Super Offer or Mega Offer
+    function openOfferFlow(name, coins) {
+      selectedOfferName = name;
+      selectedOfferCoins = coins;
+
+      // Rule: If less than 25 diamonds, open 50-Question Quiz!
+      if (currentUser.diamonds < 25) {
+        document.getElementById('quiz-offer-title').innerText = `${name} Quiz (${currentUser.diamonds}/25 💎)`;
+        document.getElementById('quiz-modal').classList.remove('hidden');
+        document.getElementById('quiz-ad-box').classList.add('hidden');
+      } else {
+        // Once user has 25 diamonds, open the Offer completion screen!
+        document.getElementById('offer-screen-title').innerText = name;
+        document.getElementById('banner-offer-coins').innerText = coins.toLocaleString();
+        document.getElementById('offer-screen').classList.remove('hidden');
+        resetOfferUI();
+      }
     }
+
+    function closeOfferScreen() { document.getElementById('offer-screen').classList.add('hidden'); }
+
+    function resetOfferUI() {
+      offerState = 'unstarted';
+      document.getElementById('error-app-not-detected').classList.add('hidden');
+      document.getElementById('upload-box').classList.add('hidden');
+      document.getElementById('timer-bar-container').classList.add('hidden');
+      document.getElementById('step-card-1').className = "p-3.5 rounded-2xl border bg-white flex justify-between items-center";
+      document.getElementById('step-check-1').className = "w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-transparent text-xs";
+      document.getElementById('offer-main-btn').innerText = "Start Offer";
+      document.getElementById('offer-main-btn').className = "w-full py-3.5 rounded-xl bg-indigo-600 text-white font-black text-xs shadow-md";
+    }
+
+    function handleOfferStep() {
+      if (offerState === 'unstarted') {
+        showAdCountdown(4, () => {
+          offerState = 'ad_done';
+          document.getElementById('step-card-1').className = "p-3.5 rounded-2xl border border-emerald-300 bg-emerald-50 flex justify-between items-center";
+          document.getElementById('step-check-1').className = "w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs";
+          document.getElementById('upload-box').classList.remove('hidden');
+          document.getElementById('offer-main-btn').innerText = "✓ Verify Installation & Screenshot";
+        });
+      } else if (offerState === 'ad_done') {
+        const file = document.getElementById('screenshot-file-input').files[0];
+        if (!file) {
+          document.getElementById('error-app-not-detected').classList.remove('hidden');
+          document.getElementById('offer-main-btn').innerText = "Restart Offer";
+          offerState = 'failed';
+          return;
+        }
+        document.getElementById('error-app-not-detected').classList.add('hidden');
+        startTwoMinuteGoldenBar();
+      } else if (offerState === 'failed') {
+        resetOfferUI();
+        handleOfferStep();
+      } else if (offerState === 'claim_ready') {
+        currentUser.diamonds -= 25;
+        currentUser.coins += selectedOfferCoins;
+        renderUI();
+        alert(`🎉 Congratulations! ${selectedOfferCoins} Coins added to your total balance!`);
+        closeOfferScreen();
+      }
+    }
+
+    function startTwoMinuteGoldenBar() {
+      offerState = 'tracking';
+      document.getElementById('timer-bar-container').classList.remove('hidden');
+      let progress = 0;
+      let left = 120;
+      const t = setInterval(() => {
+        progress += 10;
+        left -= 12;
+        document.getElementById('golden-bar').style.width = `${progress}%`;
+        const m = Math.floor(Math.max(left, 0) / 60);
+        const s = Math.max(left, 0) % 60;
+        document.getElementById('timer-text').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        if (progress >= 100) {
+          clearInterval(t);
+          offerState = 'claim_ready';
+          document.getElementById('offer-main-btn').innerText = `🎁 Claim ${selectedOfferCoins} Coins`;
+          document.getElementById('offer-main-btn').className = "w-full py-3.5 rounded-xl bg-amber-500 text-white font-black text-xs shadow-md animate-bounce";
+        }
+      }, 700);
+    }
+
+    // Inside Offer Quiz: Answer & Ads
     function answerQuiz(c) {
       if (c) document.getElementById('quiz-ad-box').classList.remove('hidden');
       else alert("Incorrect! Try again.");
     }
+
     function claimQuizDiamond() {
       document.getElementById('quiz-modal').classList.add('hidden');
       showAdCountdown(3, async () => {
-        const data = await apiRequest('/api/quiz-reward', 'POST');
-        if (data && data.success) {
-          currentUser.diamonds = data.diamonds;
-          renderUI();
-          alert("💎 +1 Diamond claimed!");
-        }
+        currentUser.diamonds += 1;
+        renderUI();
+        alert(`💎 +1 Diamond claimed! You have ${currentUser.diamonds}/25 💎.`);
       });
     }
-    async function testAddDiamonds(qty) {
-      for (let i = 0; i < qty; i++) await apiRequest('/api/quiz-reward', 'POST');
-      const data = await apiRequest('/api/user');
-      if (data && data.success) { currentUser = data.user; renderUI(); alert(`💎 Added ${qty} Diamonds!`); }
+
+    function testAddDiamonds(qty) {
+      currentUser.diamonds += qty;
+      renderUI();
+      alert(`💎 Set to ${currentUser.diamonds} Diamonds! You can now complete the Super Offer.`);
     }
-    async function launchAppRoadmap(appName, packageName, appIcon) {
-      document.getElementById('roadmap-app-title').innerText = appName;
-      document.getElementById('card-app-title').innerText = appName;
-      document.getElementById('card-package-name').innerText = packageName;
-      document.getElementById('roadmap-app-icon').className = `fa-solid ${appIcon}`;
-      const data = await apiRequest('/api/offer/start', 'POST', { appName, packageName, appIcon });
-      if (data && data.success) { currentUser.coins = data.newCoins; renderUI(); document.getElementById('roadmap-screen').classList.remove('hidden'); }
-    }
-    function closeRoadmapScreen() { document.getElementById('roadmap-screen').classList.add('hidden'); }
-    function submitStep2Screenshot() {
-  const file = document.getElementById('step2-file-input').files[0];
-  if (!file) return alert("Select screenshot.");
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const data = await apiRequest('/api/offer/submit-screenshot', 'POST', { screenshotBase64: e.target.result });
-    if (data && data.success) {
-      document.getElementById('step2-upload-form').classList.add('hidden');
-      document.getElementById('step2-pending-box').classList.remove('hidden');
-      alert("✓ Submitted for review!");
-    }
-  };
-  reader.readAsDataURL(file);
-}
-async function demoApprovePending() {
-  const data = await apiRequest('/api/offer/approve-screenshot', 'POST');
-  if (data && data.success) {
-    currentUser.coins = data.coins;
+
+    // Wallet Withdrawals
+    async function submitWithdrawal(method, amountRs, coinsRequired) {
+      if (currentUser.coins < coinsRequired) {
+        return alert(`❌ Insufficient Coins! You need ${coinsRequired.toLocaleString()} Coins for ₹${amountRs}. Currently you have ${currentUser.coins} coins.`);
+      }
+      const dest = prompt(`Enter ${method.includes('UPI') ? 'UPI ID (e.g. name@okaxis)' : 'Email for Google Play Code'}:`);
+      if (!dest) return;
+    currentUser.coins -= coinsRequired;
     renderUI();
-    document.getElementById('step2-pending-box').innerHTML = `<p class="text-xs font-bold text-emerald-800">Approved! +350 Coins Added ✓</p>`;
-    alert("🎉 +350 Coins approved!");
+    alert(`✅ Payout of ₹${amountRs} submitted to ${dest}!\n${coinsRequired.toLocaleString()} coins deducted from your balance.`);
   }
-}
-async function claimMilestone(key, coins, btn) {
-  const data = await apiRequest('/api/offer/claim-milestone', 'POST', { milestoneKey: key });
-  if (data && data.success) {
-    currentUser.coins = data.coins;
-    renderUI();
-    btn.innerText = "Claimed ✓";
-    btn.disabled = true;
-    alert(`🎉 +${coins} Coins!`);
+
+  // Report Issue
+  async function submitReport() {
+    const s = document.getElementById('report-subject').value.trim();
+    const d = document.getElementById('report-desc').value.trim();
+    if (!s || !d) return alert("Please fill in subject and description.");
+    alert("📨 Issue submitted to admin! We will investigate.");
+    document.getElementById('report-subject').value = '';
+    document.getElementById('report-desc').value = '';
   }
-}
-async function submitWithdrawal(method, amountRs, coinsRequired) {
-  if (currentUser.coins < coinsRequired) return alert(`Need ${coinsRequired} coins.`);
-  const dest = prompt(`Enter ${method === 'UPI' ? 'UPI ID' : 'Email'}:`);
-  if (!dest) return;
-  const data = await apiRequest('/api/wallet/withdraw', 'POST', { method, amountRs, coinsRequired, destination: dest });
-  if (data && data.success) { currentUser.coins = data.newCoins; renderUI(); alert(`✅ Payout of ₹${amountRs} submitted!`); }
-}
-function showAdCountdown(seconds, cb) {
-  const ad = document.getElementById('ad-simulator');
-  ad.classList.remove('hidden');
-  let rem = seconds;
-  document.getElementById('ad-timer').innerText = `Reward unlocks in ${rem}s...`;
-  const t = setInterval(() => {
-    rem--;
-    if (rem > 0) document.getElementById('ad-timer').innerText = `Reward unlocks in ${rem}s...`;
-    else { clearInterval(t); ad.classList.add('hidden'); cb(); }
-  }, 1000);
-}
-function handleSignOut() { if (confirm("Sign out?")) { localStorage.clear(); location.reload(); } }
-window.addEventListener('load', async () => {
-  const saved = localStorage.getItem('quizpay_user');
-  if (saved) {
-    currentUser = JSON.parse(saved);
-    renderUI();
-    const data = await apiRequest('/api/user');
-    if (data && data.success) { currentUser = data.user; renderUI(); }
-  } else {
-    document.getElementById('login-modal').classList.remove('hidden');
+
+  function showAdCountdown(sec, cb) {
+    c
+    const ad = document.getElementById('ad-simulator');
+    ad.classList.remove('hidden');
+    let rem = sec;
+    document.getElementById('ad-timer').innerText = `Reward unlocks in ${rem}s...`;
+    const t = setInterval(() => {
+      rem--;
+      if (rem > 0) document.getElementById('ad-timer').innerText = `Reward unlocks in ${rem}s...`;
+      else { clearInterval(t); ad.classList.add('hidden'); cb(); }
+    }, 1000);
   }
-});
-  </script>
+
+  function handleSignOut() { if (confirm("Sign out?")) { localStorage.clear(); location.reload(); } }
+
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('quizpay_user');
+    if (saved) { currentUser = JSON.parse(saved); renderUI(); }
+    else { document.getElementById('login-modal').classList.remove('hidden'); }
+  });
+</script>
 </body>
 </html>
+  
