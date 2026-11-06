@@ -1,224 +1,351 @@
-<button onclick="document.getElementById('quiz-modal').classList.add('hidden')" class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">✕</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>QuizPay - Play & Earn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>body{-webkit-tap-highlight-color:transparent;user-select:none;}.no-sb::-webkit-scrollbar{display:none;}</style>
+</head>
+<body class="bg-slate-900 flex justify-center items-center min-h-screen text-slate-800 font-sans sm:p-4">
+
+  <!-- Mobile Screen Shell -->
+  <div class="w-full max-w-md h-[100dvh] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden relative border border-slate-200">
+    
+    <!-- Top Header -->
+    <header class="px-5 pt-4 pb-3 flex justify-between items-center bg-white border-b border-slate-100 z-10">
+      <div class="flex items-center space-x-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-bolt text-lg"></i>
         </div>
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-          <p class="text-xs font-bold text-slate-800">Q1 of 50: How many states are there in India?</p>
+        <span class="font-black text-xl tracking-tight text-slate-900">Quiz<span class="text-indigo-600">Pay</span></span>
+      </div>
+      <div class="flex items-center space-x-1.5 bg-sky-50 border border-sky-200 px-3 py-1 rounded-full text-xs font-black text-sky-700">
+        <i class="fa-solid fa-gem text-sky-500"></i>
+        <span id="diamond-counter">0</span>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Body -->
+    <main class="flex-1 overflow-y-auto no-sb p-4 pb-20">
+
+      <!-- ================= 1. HOME ================= -->
+      <div id="tab-home" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p>
+            <h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2>
+          </div>
+          <button onclick="switchTab('wallet')" class="text-xs text-indigo-600 font-bold flex items-center gap-1">
+            Withdraw <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
         </div>
-        <div class="space-y-2">
-          <button onclick="answerQuiz(true)" class="w-full text-left p-3 rounded-xl border border-slate-200 text-xs font-bold">28 States</button>
-          <button onclick="answerQuiz(false)" class="w-full text-left p-3 rounded-xl border border-slate-200 text-xs font-bold">32 States</button>
+
+        <!-- Total Balance -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 text-white shadow-lg relative overflow-hidden">
+          <span class="text-xs font-medium text-indigo-200">Total Coins Balance</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="coin-balance" class="text-3xl font-black">0</span>
+            <span class="text-amber-300 font-bold text-sm"><i class="fa-solid fa-coins"></i> Coins</span>
+          </div>
+          <p class="text-[11px] text-indigo-200 mt-2">Deducted automatically when you withdraw.</p>
         </div>
-        <div id="quiz-ad-box" class="hidden p-3 bg-sky-50 border border-sky-200 rounded-xl space-y-2 text-center">
-          <p class="text-xs font-bold text-sky-900">Correct! Watch an ad to claim +1 Diamond.</p>
-          <button onclick="claimQuizDiamond()" class="w-full py-2 bg-sky-600 text-white text-xs font-bold rounded-lg">Watch Ad to Claim 1 💎</button>
+
+        <!-- Daily Bonus -->
+        <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/70 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">Daily Streak Check-In</h4>
+              <p class="text-[11px] text-slate-500">+50 free coins every 24 hours</p>
+            </div>
+          </div>
+          <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition">
+            Claim
+          </button>
+        </div>
+
+        <!-- Quiz to Farm Diamonds -->
+        <div class="p-3.5 rounded-2xl border border-sky-200 bg-sky-50 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500 text-white flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">50-Question Quiz Pool</h4>
+              <p class="text-[11px] text-slate-500">Correct quiz + watch ad = <strong>+1 💎</strong></p>
+            </div>
+          </div>
+          <button onclick="openQuizModal()" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-xs font-bold">
+            Play Quiz
+          </button>
+        </div>
+
+        <!-- Offer Section Header -->
+        <div class="pt-2 flex justify-between items-end">
+          <div>
+            <h3 class="text-sm font-black text-slate-900 tracking-tight">Available App Task Offers</h3>
+            <p class="text-[11px] text-slate-400">Install, upload screenshot & complete retention stages</p>
+          </div>
+          <button onclick="testAddDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-md">
+            + Set 25 💎 (Test)
+          </button>
+        </div>
+
+        <!-- Dynamic App Tasks -->
+        <div class="space-y-3">
+          <div onclick="launchAppRoadmap('Lenskart : Eyeglasses & More', 'com.lenskart.app', 'fa-glasses')" class="cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-400 transition flex items-center justify-between shadow-sm active:scale-95">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-xl">
+                <i class="fa-solid fa-glasses"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm text-slate-800">Lenskart : Eyeglasses</h4>
+                <p class="text-[11px] text-slate-400">com.lenskart.app</p>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Earn 1,025 Coins</span>
+              </div>
+            </div>
+            <button class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Start Task</button>
+          </div>
+
+          <div onclick="launchAppRoadmap('Zupee : Play Ludo & Win', 'com.zupee.app', 'fa-gamepad')" class="cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-amber-400 transition flex items-center justify-between shadow-sm active:scale-95">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 text-xl">
+                <i class="fa-solid fa-gamepad"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm text-slate-800">Zupee : Play Games</h4>
+                <p class="text-[11px] text-slate-400">com.zupee.app</p>
+                <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Earn 1,025 Coins</span>
+              </div>
+            </div>
+            <button class="px-3 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Start Task</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 2. WALLET ================= -->
+      <div id="tab-wallet" class="space-y-4 hidden">
+        <div>
+          <h2 class="text-lg font-black text-slate-900">Withdraw Rewards</h2>
+          <p class="text-xs text-slate-400">Coins deduct automatically on withdrawal</p>
+        </div>
+
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center">
+          <div>
+            <span class="text-xs text-slate-400 font-medium">Available Balance</span>
+            <div class="flex items-center gap-1.5 text-lg font-black text-slate-800">
+              <i class="fa-solid fa-coins text-amber-500"></i>
+              <span id="wallet-balance-display">0</span> Coins
+            </div>
+          </div>
+          <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold">Active</span>
+        </div>
+
+        <!-- Google Play -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-50 border flex items-center justify-center">
+              <i class="fa-brands fa-google-play text-2xl text-emerald-500"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm">Google Play Code</h4>
+              <p class="text-xs text-slate-400">Min. Payout: <strong class="text-indigo-600">₹50</strong> (5,000 Coins)</p>
+            </div>
+          </div>
+          <button onclick="submitWithdrawal('Google Play Code', 50, 5000)" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+            Withdraw ₹50 Code
+          </button>
+        </div>
+
+        <!-- UPI -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 border flex items-center justify-center text-emerald-700 font-black text-xs">UPI</div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm">Direct UPI Transfer</h4>
+              <p class="text-xs text-slate-400">Min. Payout: <strong class="text-indigo-600">₹100</strong> (10,000 Coins)</p>
+            </div>
+          </div>
+          <button onclick="submitWithdrawal('UPI', 100, 10000)" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+            Withdraw ₹100 via UPI
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= 3. PROFILE ================= -->
+      <div id="tab-profile" class="space-y-4 hidden">
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white shadow-sm flex items-center gap-4">
+          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center">U</div>
+          <div>
+            <h3 id="profile-name-display" class="font-bold text-slate-800 text-sm">User</h3>
+            <p id="profile-email-display" class="text-xs text-slate-500 truncate"></p>
+          </div>
+        </div>
+
+        <button onclick="handleSignOut()" class="w-full py-3 rounded-xl border border-red-200 bg-red-50 text-red-600 font-bold text-xs">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+
+    </main>
+
+    <!-- ================= FULLSCREEN ROADMAP SCREEN ================= -->
+    <div id="roadmap-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col">
+      <div class="px-5 pt-4 pb-3 flex items-center gap-3 bg-white border-b border-slate-200 sticky top-0 z-10">
+        <button onclick="closeRoadmapScreen()" class="text-slate-700 text-base">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h3 id="roadmap-app-title" class="font-extrabold text-base text-slate-800 truncate">App Offer</h3>
+      </div>
+
+      <div class="flex-1 overflow-y-auto no-sb p-4 space-y-4 pb-12">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center gap-3.5">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-2xl shadow-sm">
+            <i id="roadmap-app-icon" class="fa-solid fa-glasses"></i>
+          </div>
+          <div>
+            <h3 id="card-app-title" class="font-black text-sm text-slate-800">App Name</h3>
+            <p id="card-package-name" class="text-xs text-slate-400">com.app.package</p>
+            <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">
+              <i class="fa-regular fa-clock"></i> Installed about 3 hours ago
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] font-black uppercase tracking-wider text-slate-400">Rewards</span>
+          <button onclick="demoApprovePending()" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
+            ⚡ Admin Approve Screenshot (Demo)
+          </button>
+        </div>
+
+        <!-- Milestone 1 -->
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm mt-0.5">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">Initial Install Reward</h4>
+              <p class="text-[11px] text-slate-500">Install app and meet usage requirement</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-black text-indigo-700 flex items-center justify-end gap-1">
+              <i class="fa-solid fa-coins text-amber-500"></i> 100
+            </span>
+            <span class="text-[11px] font-bold text-emerald-600">Approved ✓</span>
+          </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div id="step2-card" class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-3">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-sm mt-0.5">
+                <i class="fa-regular fa-clock"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-slate-800">Immediate</h4>
+                <p class="text-[11px] text-slate-500">Sign up in the app & upload screenshot</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black text-indigo-700 flex items-center justify-end gap-1">
+                <i class="fa-solid fa-coins text-amber-500"></i> 350
+              </span>
+              <span id="step2-badge" class="text-[10px] font-bold bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">Required</span>
+            </div>
+          </div>
+
+          <div id="step2-upload-form" class="space-y-2 pt-1 border-t border-amber-200/60">
+            <input type="file" id="step2-file-input" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-amber-600 file:text-white" />
+            <button onclick="submitStep2Screenshot()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm">
+              Upload Login Screenshot Proof
+            </button>
+          </div>
+
+          <div id="step2-pending-box" class="hidden p-3.5 rounded-xl bg-amber-100/60 border border-amber-300 space-y-1">
+            <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+              <i class="fa-regular fa-clock"></i>
+              <span>Pending Review</span>
+            </div>
+            <p class="text-[11px] text-amber-800 leading-snug">
+              Your screenshot is under admin review. Coins will be awarded after approval.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-sm mt-0.5"><i class="fa-solid fa-lock"></i></div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">After 3h 6m</h4>
+              <p class="text-[11px] text-slate-400">Use app for 1 more minutes</p>
+              <button onclick="claimMilestone('step3_3h', 100, this)" class="mt-2 text-[10px] font-bold bg-indigo-50 border border-indigo-200 text-indigo-600 px-2.5 py-1 rounded-md">
+                Claim 100 Coins (Test Unlock)
+              </button>
+            </div>
+          </div>
+          <span class="text-xs font-black text-indigo-700 flex items-center gap-1"><i class="fa-solid fa-coins text-amber-500"></i> 100</span>
+        </div>
+
+        <!-- Total Potential Earnings -->
+        <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 text-center space-y-1">
+          <span class="text-xs font-bold text-slate-500">Total Potential Earnings</span>
+          <div class="text-2xl font-black text-indigo-700 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-coins text-amber-500"></i> 1,025 Coins
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Ad Overlay -->
-    <div id="ad-simulator" class="hidden absolute inset-0 bg-black text-white z-50 flex flex-col items-center justify-center p-6 space-y-3 text-center">
-      <div class="animate-spin text-amber-400 text-4xl mb-2"><i class="fa-solid fa-spinner"></i></div>
-      <h3 class="text-lg font-bold">Playing Sponsor Video Ad...</h3>
-      <p id="ad-timer" class="text-xs text-slate-400">Do not close this ad</p>
+    <!-- Bottom Navigation Bar (Strictly 3 Tabs) -->
+    <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 flex items-center justify-around px-4 z-20">
+      <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center justify-center text-indigo-600 w-16">
+        <i class="fa-solid fa-house text-lg"></i>
+        <span class="text-[10px] font-bold mt-1">Home</span>
+      </button>
+      <button onclick="switchTab('wallet')" id="nav-btn-wallet" class="flex flex-col items-center justify-center text-slate-400 w-16">
+        <i class="fa-solid fa-wallet text-lg"></i>
+        <span class="text-[10px] font-bold mt-1">Wallet</span>
+      </button>
+      <button onclick="switchTab('profile')" id="nav-btn-profile" class="flex flex-col items-center justify-center text-slate-400 w-16">
+        <i class="fa-solid fa-user text-lg"></i>
+        <span class="text-[10px] font-bold mt-1">Profile</span>
+      </button>
+    </nav>
+
+    <!-- Google Login Modal -->
+    <div id="login-modal" class="hidden absolute inset-0 bg-white z-50 flex flex-col justify-center px-6 space-y-4">
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white text-3xl shadow-xl shadow-indigo-100">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h2 class="text-2xl font-black text-slate-900">Quiz & Earn</h2>
+        <p class="text-xs text-slate-500">Play quizzes, complete offers, & earn direct rewards</p>
+      </div>
+
+      <div class="space-y-3 pt-3">
+        <input id="login-name" type="text" placeholder="Your Full Name" class="w-full p-3 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500" />
+        <input id="login-email" type="email" placeholder="Your Gmail Address" class="w-full p-3 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500" />
+        <button onclick="loginUser()" class="w-full py-3.5 bg-slate-900 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2">
+          <i class="fa-brands fa-google text-red-500 text-sm"></i> Continue with Google
+        </button>
+      </div>
     </div>
 
-  </div>
-
-  <script>
-    let currentUser = null;
-
-    async function apiRequest(endpoint, method = 'GET', body = null) {
-      const headers = {
-        'Content-Type': 'application/json',
-        'x-user-email': currentUser ? currentUser.email : ''
-      };
-      const opts = { method, headers };
-      if (body) opts.body = JSON.stringify(body);
-      const res = await fetch(endpoint, opts);
-      return await res.json();
-    }
-
-    async function loginUser() {
-      const name = document.getElementById('login-name').value.trim();
-      const email = document.getElementById('login-email').value.trim().toLowerCase();
-      if (!name || !email) return alert("Fill in your name and email.");
-
-      const data = await apiRequest('/api/auth/login', 'POST', { name, email });
-      if (data && data.success) {
-        currentUser = data.user;
-        localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
-        document.getElementById('login-modal').classList.add('hidden');
-        renderUI();
-      }
-    }
-
-    function renderUI() {
-      if (!currentUser) return;
-      document.getElementById('home-username').innerText = `${currentUser.name} 👋`;
-      document.getElementById('profile-name-display').innerText = currentUser.name;
-      document.getElementById('profile-email-display').innerText = currentUser.email;
-      document.getElementById('profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
-
-      document.getElementById('coin-balance').innerText = currentUser.coins.toLocaleString();
-      document.getElementById('wallet-balance-display').innerText = currentUser.coins.toLocaleString();
-      document.getElementById('diamond-counter').innerText = currentUser.diamonds;
-    }
-
-    function switchTab(t) {
-      ['home', 'wallet', 'profile'].forEach(tab => {
-        document.getElementById(`tab-${tab}`).classList.add('hidden');
-        document.getElementById(`nav-btn-${tab}`).classList.replace('text-indigo-600', 'text-slate-400');
-      });
-      document.getElementById(`tab-${t}`).classList.remove('hidden');
-      document.getElementById(`nav-btn-${t}`).classList.replace('text-slate-400', 'text-indigo-600');
-    }
-
-    async function claimDailyCheckin() {
-      const data = await apiRequest('/api/daily-checkin', 'POST');
-      if (data && data.success) {
-        currentUser.coins = data.coins;
-        renderUI();
-        const btn = document.getElementById('checkin-btn');
-        btn.innerText = "Claimed ✓";
-        btn.disabled = true;
-        btn.classList.replace('bg-amber-500', 'bg-slate-300');
-        alert("🎉 +50 Coins claimed!");
-      }
-    }
-
-    function openQuizModal() {
-      document.getElementById('quiz-modal').classList.remove('hidden');
-      document.getElementById('quiz-ad-box').classList.add('hidden');
-    }
-    function answerQuiz(c) {
-      if (c) document.getElementById('quiz-ad-box').classList.remove('hidden');
-      else alert("Incorrect! Try again.");
-    }
-    function claimQuizDiamond() {
-      document.getElementById('quiz-modal').classList.add('hidden');
-      showAdCountdown(3, async () => {
-        const data = await apiRequest('/api/quiz-reward', 'POST');
-        if (data && data.success) {
-          currentUser.diamonds = data.diamonds;
-          renderUI();
-          alert("💎 +1 Diamond claimed!");
-        }
-      });
-    }
-
-    async function testAddDiamonds(qty) {
-      for (let i = 0; i < qty; i++) await apiRequest('/api/quiz-reward', 'POST');
-      const data = await apiRequest('/api/user');
-      if (data && data.success) {
-        currentUser = data.user;
-        renderUI();
-        alert(`💎 Added ${qty} Diamonds!`);
-      }
-    }
-
-    async function launchAppRoadmap(appName, packageName, appIcon) {
-      document.getElementById('roadmap-app-title').innerText = appName;
-      document.getElementById('card-app-title').innerText = appName;
-      document.getElementById('card-package-name').innerText = packageName;
-      document.getElementById('roadmap-app-icon').className = `fa-solid ${appIcon}`;
-
-      const data = await apiRequest('/api/offer/start', 'POST', { appName, packageName, appIcon });
-      if (data && data.success) {
-        currentUser.coins = data.newCoins;
-        renderUI();
-        document.getElementById('roadmap-screen').classList.remove('hidden');
-      }
-    }
-
-    function closeRoadmapScreen() {
-      document.getElementById('roadmap-screen').classList.add('hidden');
-    }
-
-    function submitStep2Screenshot() {
-      const file = document.getElementById('step2-file-input').files[0];
-      if (!file) return alert("Select a screenshot.");
-
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const data = await apiRequest('/api/offer/submit-screenshot', 'POST', { screenshotBase64: e.target.result });
-        if (data && data.success) {
-          document.getElementById('step2-upload-form').classList.add('hidden');
-          document.getElementById('step2-pending-box').classList.remove('hidden');
-          document.getElementById('step2-badge').innerText = "Pending";
-          alert("✓ Screenshot submitted for review!");
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function demoApprovePending() {
-      const data = await apiRequest('/api/offer/approve-screenshot', 'POST');
-      if (data && data.success) {
-        currentUser.coins = data.coins;
-        renderUI();
-        document.getElementById('step2-pending-box').innerHTML = `<p class="text-xs font-bold text-emerald-800">Screenshot Approved! +350 Coins Added ✓</p>`;
-        document.getElementById('step2-badge').innerText = "Approved ✓";
-        alert("🎉 +350 Coins approved!");
-      }
-    }
-
-    async function claimMilestone(key, coins, btn) {
-      const data = await apiRequest('/api/offer/claim-milestone', 'POST', { milestoneKey: key });
-      if (data && data.success) {
-        currentUser.coins = data.coins;
-        renderUI();
-        btn.innerText = "Claimed ✓";
-        btn.disabled = true;
-        alert(`🎉 +${coins} Coins claimed!`);
-      }
-    }
-
-    async function submitWithdrawal(method, amountRs, coinsRequired) {
-      if (currentUser.coins < coinsRequired) return alert(`Need ${coinsRequired} coins.`);
-      const dest = prompt(`Enter ${method === 'UPI' ? 'UPI ID' : 'Email'}:`);
-      if (!dest) return;
-
-      const data = await apiRequest('/api/wallet/withdraw', 'POST', { method, amountRs, coinsRequired, destination: dest });
-      if (data && data.success) {
-        currentUser.coins = data.newCoins;
-        renderUI();
-        alert(`✅ Payout of ₹${amountRs} submitted!`);
-      }
-    }
-
-    function showAdCountdown(seconds, cb) {
-      const ad = document.getElementById('ad-simulator');
-      const timer = document.getElementById('ad-timer');
-      ad.classList.remove('hidden');
-      let rem = seconds;
-      timer.innerText = `Reward unlocks in ${rem}s...`;
-      const t = setInterval(() => {
-        rem--;
-        if (rem > 0) timer.innerText = `Reward unlocks in ${rem}s...`;
-        else { clearInterval(t); ad.classList.add('hidden'); cb(); }
-      }, 1000);
-    }
-
-    function handleSignOut() {
-      if (confirm("Sign out?")) {
-        localStorage.clear();
-        location.reload();
-      }
-    }
-
-    window.addEventListener('load', async () => {
-      const saved = localStorage.getItem('quizpay_user');
-      if (saved) {
-        currentUser = JSON.parse(saved);
-        renderUI();
-        const data = await apiRequest('/api/user');
-        if (data && data.success) {
-          currentUser = data.user;
-          renderUI();
-        }
-      } else {
-        document.getElementById('login-modal').classList.remove('hidden');
-      }
-    });
-  </script>
-</body>
-    </html>
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="hidden absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex flex-col justify-end">
+      <div class="bg-white rounded-t-3xl p-5 space-y-3">
+        <div class="flex justify-between items-center border-b pb-2">
+          <h3 class="font-bold text-slate-800 text-sm">50-Question Quiz</h3>
+          <button onclick="document.getElementById('quiz-modal').classList.add('hidden')" class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">✕</button>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <p class="text-xs font-bold text-slate-800
