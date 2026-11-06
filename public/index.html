@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>QuizPay - Play & Earn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { -webkit-tap-highlight-color: transparent; user-select: none; }
+    .custom-scroll::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-slate-900 flex justify-center items-center min-h-screen text-slate-800 font-sans sm:p-4">
+
+  <!-- Mobile Screen -->
+  <div class="w-full max-w-md h-[100dvh] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden relative border border-slate-200">
+    
+    <!-- Top Header -->
+    <header class="px-5 pt-4 pb-3 flex justify-between items-center bg-white border-b border-slate-100 z-10">
+      <div class="flex items-center space-x-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-bolt text-lg"></i>
+        </div>
+        <span class="font-black text-xl tracking-tight text-slate-900">Quiz<span class="text-indigo-600">Pay</span></span>
+      </div>
+      <div class="flex items-center space-x-1.5 bg-sky-50 border border-sky-200 px-3 py-1 rounded-full text-xs font-black text-sky-700">
+        <i class="fa-solid fa-gem text-sky-500"></i>
+        <span id="diamond-counter">0</span>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto custom-scroll p-4 pb-20">
+
+      <!-- ================= TAB 1: HOME ================= -->
+      <div id="tab-home" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p>
+            <h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2>
+          </div>
+          <button onclick="switchTab('wallet')" class="text-xs text-indigo-600 font-bold flex items-center gap-1 hover:underline">
+            Withdraw <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Total Balance Card -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 text-white shadow-lg relative overflow-hidden">
+          <div class="relative z-10">
+            <span class="text-xs font-medium text-indigo-200">Total Coins Balance</span>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span id="coin-balance" class="text-3xl font-black">0</span>
+              <span class="text-amber-300 font-bold text-sm flex items-center gap-1">
+                <i class="fa-solid fa-coins"></i> Coins
+              </span>
+            </div>
+            <p class="text-[11px] text-indigo-200 mt-2">Deducted automatically when you withdraw.</p>
+          </div>
+          <i class="fa-solid fa-sack-dollar absolute -bottom-3 -right-2 text-7xl text-white/10"></i>
+        </div>
+
+        <!-- Daily Streak Bonus -->
+        <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/70 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">Daily Streak Check-In</h4>
+              <p class="text-[11px] text-slate-500">+50 free coins every 24 hours</p>
+            </div>
+          </div>
+          <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition">
+            Claim
+          </button>
+        </div>
+
+        <!-- 50-Question Quiz to Farm Diamonds -->
+        <div class="p-3.5 rounded-2xl border border-sky-200 bg-sky-50 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-500 text-white flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">50-Question Quiz Pool</h4>
+              <p class="text-[11px] text-slate-500">Correct answers + watch ad = <strong>+1 💎</strong></p>
+            </div>
+          </div>
+          <button onclick="openQuizModal()" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white text-xs font-bold transition">
+            Play Quiz
+          </button>
+        </div>
+
+        <!-- Offers Header & Quick Diamond Tool -->
+        <div class="pt-2 flex justify-between items-end">
+          <div>
+            <h3 class="text-sm font-black text-slate-900 tracking-tight">Available App Task Offers</h3>
+            <p class="text-[11px] text-slate-400">Install, upload screenshot & complete retention stages</p>
+          </div>
+          <button onclick="testAddDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded-md">
+            + Set 25 💎 (Test)
+          </button>
+        </div>
+
+        <!-- Dynamic App Task Cards -->
+        <div class="space-y-3">
+          <!-- App 1: Lenskart -->
+          <div onclick="launchAppRoadmap('Lenskart : Eyeglasses & More', 'com.lenskart.app', 'fa-glasses')" class="cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-400 transition flex items-center justify-between shadow-sm active:scale-95">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-xl">
+                <i class="fa-solid fa-glasses"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm text-slate-800">Lenskart : Eyeglasses</h4>
+                <p class="text-[11px] text-slate-400">com.lenskart.app</p>
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Earn 1,025 Coins</span>
+              </div>
+            </div>
+            <button class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-bold">Start Task</button>
+          </div>
+
+          <!-- App 2: Zupee -->
+          <div onclick="launchAppRoadmap('Zupee : Play Ludo & Win', 'com.zupee.app', 'fa-gamepad')" class="cursor-pointer p-4 rounded-2xl border border-slate-200 bg-white hover:border-amber-400 transition flex items-center justify-between shadow-sm active:scale-95">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 text-xl">
+                <i class="fa-solid fa-gamepad"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm text-slate-800">Zupee : Play Games</h4>
+                <p class="text-[11px] text-slate-400">com.zupee.app</p>
+                <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Earn 1,025 Coins</span>
+              </div>
+            </div>
+            <button class="px-3 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Start Task</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 2: WALLET ================= -->
+      <div id="tab-wallet" class="space-y-4 hidden">
+        <div>
+          <h2 class="text-lg font-black text-slate-900">Withdraw Rewards</h2>
+          <p class="text-xs text-slate-400">Coins deduct automatically on withdrawal</p>
+        </div>
+
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center">
+          <div>
+            <span class="text-xs text-slate-400 font-medium">Available Balance</span>
+            <div class="flex items-center gap-1.5 text-lg font-black text-slate-800">
+              <i class="fa-solid fa-coins text-amber-500"></i>
+              <span id="wallet-balance-display">0</span> Coins
+            </div>
+          </div>
+          <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold">Active</span>
+        </div>
+
+        <!-- Google Play Code (Min ₹50) -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center">
+              <i class="fa-brands fa-google-play text-2xl text-emerald-500"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm">Google Play Code</h4>
+              <p class="text-xs text-slate-400">Min. Payout: <strong class="text-indigo-600">₹50</strong> (5,000 Coins)</p>
+            </div>
+          </div>
+          <button onclick="submitWithdrawal('Google Play Code', 50, 5000)" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+            Withdraw ₹50 Code
+          </button>
+        </div>
+
+        <!-- Direct UPI (Min ₹100) -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white space-y-3 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 font-black text-xs">
+              UPI
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm">Direct UPI Transfer</h4>
+              <p class="text-xs text-slate-400">Min. Payout: <strong class="text-indigo-600">₹100</strong> (10,000 Coins)</p>
+            </div>
+          </div>
+          <button onclick="submitWithdrawal('UPI', 100, 10000)" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+            Withdraw ₹100 via UPI
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= TAB 3: PROFILE ================= -->
+      <div id="tab-profile" class="space-y-4 hidden">
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white shadow-sm flex items-center gap-4">
+          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center">U</div>
+          <div>
+            <h3 id="profile-name-display" class="font-bold text-slate-800 text-sm">User</h3>
+            <p id="profile-email-display" class="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5 truncate"></p>
+          </div>
+        </div>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-emerald-800 text-xs font-bold">
+          <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+          <span>Anti-Fraud Shield Active: No VPN Detected</span>
+        </div>
+
+        <!-- Issue Report -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white shadow-sm space-y-3">
+          <span class="text-xs font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Report an Issue
+          </span>
+          <input id="report-subject" type="text" placeholder="Subject (e.g. Withdrawal pending)" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs outline-none" />
+          <textarea id="report-desc" rows="3" placeholder="Describe the issue..." class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs outline-none"></textarea>
+          <button onclick="submitReport()" class="w-full py-2 bg-indigo-600 text-white font-bold text-xs rounded-xl">Submit Report</button>
+        </div>
+
+        <button onclick="handleSignOut()" class="w-full py-3 rounded-xl border border-red-200 bg-red-50 text-red-600 font-bold text-xs">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+
+    </main>
+
+    <!-- ================= FULLSCREEN MILESTONE SCREEN ================= -->
+    <div id="roadmap-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col">
+      <div class="px-5 pt-4 pb-3 flex items-center gap-3 bg-white border-b border-slate-200 sticky top-0 z-10">
+        <button onclick="closeRoadmapScreen()" class="text-slate-700 text-base">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h3 id="roadmap-app-title" class="font-extrabold text-base text-slate-800 truncate">App Offer</h3>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4 pb-12">
+        <!-- App Details -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center gap-3.5">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 text-2xl shadow-sm">
+            <i id="roadmap-app-icon" class="fa-solid fa-glasses"></i>
+          </div>
+          <div>
+            <h3 id="card-app-title" class="font-black text-sm text-slate-800">App Name</h3>
+            <p id="card-package-name" class="text-xs text-slate-400">com.app.package</p>
+            <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">
+              <i class="fa-regular fa-clock"></i> Installed about 3 hours ago
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] font-black uppercase tracking-wider text-slate-400">Rewards</span>
+          <button onclick="demoApprovePending()" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded">
+            ⚡ Admin Approve Screenshot (Demo)
+          </button>
+        </div>
+
+        <!-- Milestone 1: Initial Install (Approved) -->
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm mt-0.5">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">Initial Install Reward</h4>
+              <p class="text-[11px] text-slate-500">Install app and meet usage requirement</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-black text-indigo-700 flex items-center justify-end gap-1">
+              <i class="fa-solid fa-coins text-amber-500"></i> 100
+            </span>
+            <span class="text-[11px] font-bold text-emerald-600">Approved ✓</span>
+          </div>
+        </div>
+
+        <!-- Milestone 2: Immediate Sign-up Screenshot -->
+        <div id="step2-card" class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-3">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-3">
+              <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-sm mt-0.5">
+                <i class="fa-regular fa-clock"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-slate-800">Immediate</h4>
+                <p class="text-[11px] text-slate-500">Sign up in the app & take a screenshot & upload screenshot</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black text-indigo-700 flex items-center justify-end gap-1">
+                <i class="fa-solid fa-coins text-amber-500"></i> 350
+              </span>
+              <span id="step2-badge" class="text-[10px] font-bold bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full">Required</span>
+            </div>
+          </div>
+
+          <div id="step2-upload-form" class="space-y-2 pt-1 border-t border-amber-200/60">
+            <input type="file" id="step2-file-input" accept="image/*" onchange="inspectScreenshot(event)" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-amber-600 file:text-white" />
+            <p id="screenshot-feedback" class="text-[10px] font-bold text-slate-500"></p>
+            <button onclick="submitStep2Screenshot()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm">
+              Upload Login Screenshot Proof
+            </button>
+          </div>
+
+          <!-- Pending Review Card (Exact from Screenshot) -->
+          <div id="step2-pending-box" class="hidden p-3.5 rounded-xl bg-amber-100/60 border border-amber-300 space-y-1">
+            <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+              <i class="fa-regular fa-clock"></i>
+              <span>Pending Review</span>
+            </div>
+            <p class="text-[11px] text-amber-800 leading-snug">
+              Your screenshot is under admin review. Coins will be awarded after approval.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 3: 3h 6m -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-sm mt-0.5"><i class="fa-solid fa-lock"></i></div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">After 3h 6m</h4>
+              <p class="text-[11px] text-slate-400">Use app for 1 more minutes</p>
+              <button onclick="claimMilestone('step3_3h', 100, this)" class="mt-2 text-[10px] font-bold bg-indigo-50 border border-indigo-200 text-indigo-600 px-2.5 py-1 rounded-md">
+                Claim 100 Coins (Test Unlock)
+              </button>
+            </div>
+          </div>
+          <span class="text-xs font-black text-indigo-700 flex items-center gap-1"><i class="fa-solid fa-coins text-amber-500"></i> 100</span>
+        </div>
+
+        <!-- Milestone 4: 4h 53m -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-sm mt-0.5"><i class="fa-solid fa-lock"></i></div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">After 4h 53m</h4>
+              <p class="text-[11px] text-slate-400">Use app for 1 more minutes</p>
+              <p class="text-[10px] text-amber-600 font-semibold mt-0.5 flex items-center gap-1"><i class="fa-regular fa-clock"></i> Unlocks in 1h 42m</p>
+            </div>
+          </div>
+          <span class="text-xs font-black text-indigo-700 flex items-center gap-1"><i class="fa-solid fa-coins text-amber-500"></i> 100</span>
+        </div>
+
+        <!-- Milestone 5: 9h 53m -->
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-sm mt-0.5"><i class="fa-solid fa-lock"></i></div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800">After 9h 53m</h4>
+              <p class="text-[11px] text-slate-400">Use app for 1 more minutes</p>
+              <p class="text-[10px] text-amber
