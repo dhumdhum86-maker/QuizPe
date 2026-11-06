@@ -29,17 +29,16 @@
       </div>
     </header>
 
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <main class="flex-1 overflow-y-auto no-sb p-4 pb-20">
 
-      <!-- ================= 1. HOME TAB (NO OUTSIDE QUIZ) ================= -->
+      <!-- ================= TAB 1: HOME ================= -->
       <div id="tab-home" class="space-y-4">
         <div class="flex justify-between items-center">
           <div><p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p><h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2></div>
           <button onclick="switchTab('wallet')" class="text-xs text-indigo-600 font-bold">Withdraw →</button>
         </div>
 
-        <!-- Total Balance -->
         <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 text-white shadow-lg">
           <span class="text-xs text-indigo-200">Total Coins Balance</span>
           <div class="flex items-baseline gap-2 mt-1">
@@ -49,33 +48,28 @@
           <p class="text-[11px] text-indigo-200 mt-2">Deducted automatically when you withdraw.</p>
         </div>
 
-        <!-- Daily Streak Bonus -->
         <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/70 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-calendar-check"></i></div>
             <div><h4 class="text-xs font-bold text-slate-800">Daily Streak Check-In</h4><p class="text-[11px] text-slate-500">+50 free coins every 24 hours</p></div>
           </div>
-          <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 text-white text-xs font-bold">Claim</button>
+          <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition">Claim</button>
         </div>
 
-        <!-- Super Offer Card (Only Super Offer Left) -->
+        <!-- Super Offer Card Only -->
         <div class="pt-2 flex justify-between items-end">
-          <div>
-            <h3 class="text-sm font-black text-slate-900 tracking-tight">Super Offer</h3>
-            <p class="text-[11px] text-slate-400">Play quizzes inside to collect 25 💎 & earn 1,000 Coins</p>
-          </div>
-          <button onclick="testSetDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2 py-1 rounded active:scale-95">+25 💎 (Test)</button>
+          <div><h3 class="text-sm font-black text-slate-900 tracking-tight">Super Offer</h3><p class="text-[11px] text-slate-400">Play number captchas inside, collect 25 💎, & earn 1,000 Coins</p></div>
+          <button onclick="testSetDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded active:scale-95">+25 💎 (Test)</button>
         </div>
 
-        <!-- Big Super Offer Card -->
-        <div onclick="openSuperOffer()" class="cursor-pointer p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/70 border-2 border-indigo-300 shadow-md flex justify-between items-center active:scale-95 transition">
+        <div onclick="startSuperOfferFlow()" class="cursor-pointer p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/70 border-2 border-indigo-300 shadow-md flex justify-between items-center active:scale-95 transition">
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-[10px] font-black bg-indigo-600 text-white px-2.5 py-0.5 rounded-full uppercase tracking-wider">Super Offer</span>
               <span class="text-xs font-extrabold text-amber-500">🎁 Guaranteed 1,000 Coins</span>
             </div>
             <h4 class="font-black text-xl text-indigo-950">Install & Earn 1,000 Coins</h4>
-            <p class="text-xs text-slate-500">Play Number Quiz Inside • Collect 25 💎 to Unlock</p>
+            <p class="text-xs text-slate-500">Number Captcha Inside • Collect 25 💎 to Unlock</p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md">
             <i class="fa-solid fa-play"></i>
@@ -83,7 +77,7 @@
         </div>
       </div>
 
-      <!-- ================= 2. WALLET TAB ================= -->
+      <!-- ================= TAB 2: WALLET ================= -->
       <div id="tab-wallet" class="space-y-4 hidden">
         <div><h2 class="text-lg font-black text-slate-900">Withdraw Rewards</h2><p class="text-xs text-slate-400">Coins deduct automatically on withdrawal</p></div>
         <div class="p-4 bg-slate-50 rounded-2xl border flex justify-between items-center">
@@ -91,7 +85,6 @@
           <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold">Verified</span>
         </div>
 
-        <!-- Google Play ₹50 = 7,000 Coins -->
         <div class="p-4 rounded-2xl border bg-white space-y-3 shadow-sm">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-xl bg-slate-50 border flex items-center justify-center text-emerald-500 text-2xl"><i class="fa-brands fa-google-play"></i></div>
@@ -100,7 +93,6 @@
           <button id="btn-withdraw-gp-50" onclick="submitWithdrawal('Google Play Code ₹50', 50, 7000)" class="w-full py-2.5 rounded-xl font-bold text-xs transition">Withdraw ₹50 Code</button>
         </div>
 
-        <!-- Google Play ₹100 = 13,600 Coins -->
         <div class="p-4 rounded-2xl border bg-white space-y-3 shadow-sm">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-xl bg-slate-50 border flex items-center justify-center text-emerald-500 text-2xl"><i class="fa-brands fa-google-play"></i></div>
@@ -109,7 +101,6 @@
           <button id="btn-withdraw-gp-100" onclick="submitWithdrawal('Google Play Code ₹100', 100, 13600)" class="w-full py-2.5 rounded-xl font-bold text-xs transition">Withdraw ₹100 Code</button>
         </div>
 
-        <!-- Direct UPI ₹100 = 14,000 Coins -->
         <div class="p-4 rounded-2xl border bg-white space-y-3 shadow-sm">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-xl bg-emerald-50 border text-emerald-700 font-black text-xs flex items-center justify-center">UPI</div>
@@ -119,7 +110,7 @@
         </div>
       </div>
 
-      <!-- ================= 3. PROFILE TAB ================= -->
+      <!-- ================= TAB 3: PROFILE ================= -->
       <div id="tab-profile" class="space-y-4 hidden">
         <div class="p-4 rounded-2xl border bg-white shadow-sm flex items-center gap-4">
           <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center shadow-md">U</div>
@@ -163,15 +154,13 @@
           </div>
         </div>
 
-        <!-- Big 4-Digit Number Card with Floating Dots -->
+        <!-- Big 4-Digit Card -->
         <div class="w-64 h-52 mx-auto rounded-3xl bg-gradient-to-b from-indigo-50/80 via-blue-50/60 to-purple-50/80 border border-indigo-100 shadow-sm flex items-center justify-center relative overflow-hidden">
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-4 left-8"></div>
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-8 right-12"></div>
-          <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute bottom-10 left-16"></div>
           <span id="captcha-number-display" class="font-black text-5xl tracking-widest text-slate-900 select-none">8508</span>
         </div>
 
-        <!-- 4 Choice Options -->
         <div class="space-y-3">
           <p class="text-center text-xs font-bold text-slate-500">Select the correct number (3 attempts left)</p>
           <div id="captcha-options-grid" class="grid grid-cols-2 gap-3 max-w-xs mx-auto"></div>
@@ -194,7 +183,7 @@
           </p>
         </div>
 
-        <button onclick="alert(`You have completed ${currentUser.completedOffers || 0} offers so far!`)" class="w-full max-w-xs mx-auto py-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
+        <button onclick="alert(`Completed offers: ${currentUser.completedOffers || 0}`)" class="w-full max-w-xs mx-auto py-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
           <i class="fa-solid fa-gift"></i> My Offers <span id="quiz-bottom-offers-count" class="bg-indigo-600 text-white rounded-full px-2 py-0.5 text-xs">0</span>
         </button>
       </div>
@@ -247,13 +236,11 @@
           <p class="text-sm font-black text-amber-500">🎁 Guaranteed 1,000 Coins!</p>
         </div>
 
-        <!-- Case A: App Not Detected Warning -->
         <div id="error-app-not-detected" class="hidden p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs space-y-1">
           <strong class="flex items-center gap-1.5 text-red-600 font-bold"><i class="fa-solid fa-circle-exclamation"></i> App Not Detected</strong>
           <p>We couldn't find a newly installed app. Please install the app from the ad and try again.</p>
         </div>
 
-        <!-- Step 1: Video Ad -->
         <div id="so-step-1" class="p-3.5 rounded-2xl border bg-emerald-50 border-emerald-300 flex justify-between items-center">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-check"></i></div>
@@ -262,7 +249,6 @@
           <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div>
         </div>
 
-        <!-- Step 2: Install App Active Card -->
         <div id="so-step-2" class="p-3.5 rounded-2xl border-2 border-indigo-400 bg-indigo-50/50 space-y-2">
           <div class="flex items-center gap-3">
             <div id="so-step-2-icon" class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-cloud-arrow-down"></i></div>
@@ -273,7 +259,6 @@
           </p>
         </div>
 
-        <!-- Step 3: Usage 2 Mins -->
         <div id="so-step-3" class="p-3.5 rounded-2xl border bg-white space-y-2">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center text-lg"><i class="fa-solid fa-gamepad"></i></div>
@@ -281,13 +266,11 @@
           </div>
         </div>
 
-        <!-- Step 4: Collect Coins -->
         <div class="p-3.5 rounded-2xl border bg-white flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-lg"><i class="fa-solid fa-coins"></i></div>
           <div><h4 class="text-xs font-bold">Collect Coins</h4><p class="text-[10px] text-slate-500">Earn coins and unlock milestones and bonus rewards!</p></div>
         </div>
 
-        <!-- App Usage Progress & Golden Loading Bar -->
         <div id="app-usage-progress-box" class="hidden p-4 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-3">
           <h4 class="font-black text-xs text-amber-900 flex items-center gap-1.5"><i class="fa-solid fa-rocket text-amber-600"></i> App Usage Progress</h4>
           <p class="text-[11px] text-amber-800 font-medium">🚀 Play the game or sign up in the app! Your progress updates automatically as you use the app.</p>
@@ -306,7 +289,7 @@
           <p class="text-[10px] text-red-600">⚠️ Don't delete the installed app for at least 3 hours.</p>
         </div>
 
-        <button onclick="alert('Tutorial: Watch ad completely -> Download the app inside -> Keep it open for 2 mins!')" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-xs flex items-center justify-center gap-2">
+        <button onclick="alert('Tutorial: Watch ad -> Install app -> Use 2 mins!')" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-xs flex items-center justify-center gap-2">
           <i class="fa-solid fa-play"></i> How to Complete - Watch Tutorial
         </button>
 
@@ -388,7 +371,7 @@
       </div>
     </div>
 
-    <!-- ================= DYNAMIC ADMOB POPUP ================= -->
+    <!-- Dynamic AdMob Modal -->
     <div id="dynamic-ad-modal" class="hidden absolute inset-0 bg-slate-900 z-50 flex flex-col justify-between p-6 text-white text-center">
       <div class="flex justify-between items-center text-xs text-slate-400">
         <span class="bg-slate-800 px-2.5 py-1 rounded">AdMob Rewarded Video</span>
@@ -401,9 +384,6 @@
         <div>
           <h2 id="ad-app-name" class="text-xl font-black text-white">Bixberry: Power AI</h2>
           <p id="ad-app-subtitle" class="text-xs text-slate-300">Earn Real Gift Codes & Rewards</p>
-          <div class="flex items-center justify-center gap-3 text-xs text-amber-400 font-bold mt-2">
-            <span>★ 4.3</span><span>•</span><span>1M+ Downloads</span>
-          </div>
         </div>
       </div>
       <button onclick="simulateGooglePlayInstall()" class="w-full py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-black text-sm rounded-xl shadow-lg transition">
@@ -411,7 +391,7 @@
       </button>
     </div>
 
-    <!-- Google Play Installation Simulator -->
+    <!-- PlayStore Simulation Popup -->
     <div id="playstore-modal" class="hidden absolute inset-x-0 bottom-0 bg-white rounded-t-3xl p-5 shadow-2xl z-50 text-slate-800 space-y-4 border-t">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-bold"><i id="ps-icon" class="fa-solid fa-cube"></i></div>
@@ -421,15 +401,15 @@
       <p id="ps-status-text" class="text-center text-xs font-bold text-slate-600">Downloading (0%)...</p>
     </div>
 
-    <!-- AdMob Video Countdown Overlay -->
+    <!-- Ad Countdown Simulator -->
     <div id="ad-simulator" class="hidden absolute inset-0 bg-black text-white z-50 flex flex-col items-center justify-center p-6 text-center space-y-3">
       <div class="animate-spin text-amber-400 text-4xl mb-2"><i class="fa-solid fa-spinner"></i></div>
       <h3 class="text-lg font-bold">Google AdMob Rewarded Ad</h3>
-      <p id="ad-unit-label" class="text-[10px] text-slate-500 font-mono">Unit: ca-app-pub-5787453615296015/1309961555</p>
+      <p class="text-[10px] text-slate-500 font-mono">Unit: ca-app-pub-5787453615296015/1309961555</p>
       <p id="ad-timer" class="text-xs text-slate-400">Watching video ad...</p>
     </div>
 
-    <!-- Bottom Nav (3 Buttons Only) -->
+    <!-- Bottom Nav -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t flex justify-around items-center px-4 z-20">
       <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-indigo-600 w-16"><i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
       <button onclick="switchTab('wallet')" id="nav-btn-wallet" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold mt-1">Wallet</span></button>
@@ -451,9 +431,7 @@
   </div>
 
   <script>
-    const ADMOB_REWARDED_AD_UNIT_ID = "ca-app-pub-5787453615296015/1309961555";
-
-    let currentUser = null;
+    let currentUser = { name: "User", email: "user@gmail.com", coins: 0, diamonds: 0, completedOffers: 0 };
     let quizSubCount = 0;
     let targetNumber = 8508;
     let dynamicAppInstalled = false;
@@ -467,28 +445,29 @@
     ];
 
     async function apiRequest(ep, method = 'GET', body = null) {
-      const opts = { method, headers: { 'Content-Type': 'application/json', 'x-user-email': currentUser ? currentUser.email : '' } };
-      if (body) opts.body = JSON.stringify(body);
-      const res = await fetch(ep, opts);
-      return await res.json();
+      try {
+        const opts = { method, headers: { 'Content-Type': 'application/json', 'x-user-email': currentUser.email } };
+        if (body) opts.body = JSON.stringify(body);
+        const res = await fetch(ep, opts);
+        return await res.json();
+      } catch (e) {
+        return null;
+      }
     }
 
     async function loginUser() {
       const name = document.getElementById('login-name').value.trim();
       const email = document.getElementById('login-email').value.trim().toLowerCase();
       if (!name || !email) return alert("Fill in name and email.");
-      const data = await apiRequest('/api/auth/login', 'POST', { name, email });
-      if (data && data.success) {
-        currentUser = data.user;
-        if (!currentUser.completedOffers) currentUser.completedOffers = 0;
-        localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
-        document.getElementById('login-modal').classList.add('hidden');
-        renderUI();
-      }
+      currentUser.name = name;
+      currentUser.email = email;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+      document.getElementById('login-modal').classList.add('hidden');
+      renderUI();
+      apiRequest('/api/auth/login', 'POST', { name, email });
     }
 
     function renderUI() {
-      if (!currentUser) return;
       document.getElementById('home-username').innerText = `${currentUser.name} 👋`;
       document.getElementById('profile-name-display').innerText = currentUser.name;
       document.getElementById('profile-email-display').innerText = currentUser.email;
@@ -526,15 +505,14 @@
       document.getElementById(`nav-btn-${t}`).classList.replace('text-slate-400', 'text-indigo-600');
     }
 
-    async function claimDailyCheckin() {
-      const data = await apiRequest('/api/daily-checkin', 'POST');
-      if (data && data.success) {
-        currentUser.coins = data.coins;
-        renderUI();
-        document.getElementById('checkin-btn').innerText = "Claimed ✓";
-        document.getElementById('checkin-btn').disabled = true;
-        alert("🎉 +50 Coins claimed!");
-      }
+    function claimDailyCheckin() {
+      currentUser.coins += 50;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+      renderUI();
+      document.getElementById('checkin-btn').innerText = "Claimed ✓";
+      document.getElementById('checkin-btn').disabled = true;
+      alert("🎉 +50 Coins claimed!");
+      apiRequest('/api/daily-checkin', 'POST');
     }
 
     function startSuperOfferFlow() {
@@ -608,6 +586,7 @@
           quizSubCount = 0;
           showAdCountdown(4, () => {
             currentUser.diamonds += 1;
+            localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
             renderUI();
             updateQuizCounters();
             alert(`💎 +1 Diamond claimed! (${currentUser.diamonds}/25 💎)`);
@@ -627,6 +606,7 @@
 
     function testSetDiamonds(qty) {
       currentUser.diamonds = qty;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       if (!document.getElementById('quiz-screen').classList.contains('hidden')) {
         updateQuizCounters();
@@ -784,6 +764,7 @@
 
     function claimDetailMilestone(coins, btn) {
       currentUser.coins += coins;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       btn.innerText = "Claimed ✓";
       btn.disabled = true;
@@ -794,6 +775,7 @@
       currentUser.coins += 1000;
       currentUser.diamonds = 0;
       currentUser.completedOffers = (currentUser.completedOffers || 0) + 1;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       alert("🎉 Super Offer Completed! 1,000 Coins added to wallet. Diamonds reset to 0/25 for your next offer!");
       closeDetailScreen();
@@ -806,8 +788,10 @@
       const dest = prompt(`Enter ${method.includes('UPI') ? 'UPI ID (e.g. name@okaxis)' : 'Email for Google Play Code'}:`);
       if (!dest) return;
       currentUser.coins -= coinsRequired;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       alert(`✅ Payout of ₹${amountRs} submitted to ${dest}!\n${coinsRequired.toLocaleString()} coins deducted from your balance.`);
+      apiRequest('/api/wallet/withdraw', 'POST', { method, amountRs, coinsRequired, destination: dest });
     }
 
     async function submitReport() {
@@ -817,6 +801,7 @@
       alert("📨 Issue submitted to admin! We will investigate.");
       document.getElementById('report-subject').value = '';
       document.getElementById('report-desc').value = '';
+      apiRequest('/api/support/report', 'POST', { subject: s, description: d });
     }
 
     function showAdCountdown(sec, cb) {
@@ -831,7 +816,12 @@
       }, 1000);
     }
 
-    function handleSignOut() { if (confirm("Sign out?")) { localStorage.clear(); location.reload(); } }
+    function handleSignOut() {
+      if (confirm("Sign out?")) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
 
     window.addEventListener('load', () => {
       const saved = localStorage.getItem('quizpay_user');
