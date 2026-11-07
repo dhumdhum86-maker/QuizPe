@@ -28,19 +28,7 @@ function saveDB(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
-// 1. Google AdMob SSV Route (Returns 200 OK to AdMob)
-app.all('/api/admob/ssv', (req, res) => {
-  const { user_id, reward_amount } = req.query;
-  console.log(`[ADMOB SSV] Ping received for user: ${user_id}`);
-  if (user_id) {
-    const db = loadDB();
-    if (db.users[user_id]) {
-      db.users[user_id].diamonds += parseInt(reward_amount) || 1;
-      saveDB(db);
-    }
-  }
-  return res.status(200).send("OK");
-});
+
 
 // 2. User Authentication with 1 Device = 1 Google Account Lock
 app.post('/api/auth/login', (req, res) => {
