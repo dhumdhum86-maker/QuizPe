@@ -6,6 +6,8 @@
   <title>QuizPay - Super Offer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Official Google Identity Services SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>body{-webkit-tap-highlight-color:transparent;user-select:none;}.no-sb::-webkit-scrollbar{display:none;}</style>
 </head>
 <body class="bg-slate-900 flex justify-center items-center min-h-screen text-slate-800 font-sans sm:p-4">
@@ -32,7 +34,7 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto no-sb p-4 pb-20">
 
-      <!-- ================= TAB 1: HOME ================= -->
+      <!-- ================= 1. HOME TAB (NO OUTSIDE QUIZ) ================= -->
       <div id="tab-home" class="space-y-4">
         <div class="flex justify-between items-center">
           <div><p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p><h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2></div>
@@ -56,12 +58,12 @@
           <button id="checkin-btn" onclick="claimDailyCheckin()" class="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition">Claim</button>
         </div>
 
-        <!-- Super Offer Card Only -->
         <div class="pt-2 flex justify-between items-end">
           <div><h3 class="text-sm font-black text-slate-900 tracking-tight">Super Offer</h3><p class="text-[11px] text-slate-400">Play number captchas inside, collect 25 💎, & earn 1,000 Coins</p></div>
-          <button onclick="testSetDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2.5 py-1 rounded active:scale-95">+25 💎 (Test)</button>
+          <button onclick="testSetDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2 py-1 rounded active:scale-95">+25 💎 (Test)</button>
         </div>
 
+        <!-- Super Offer Card Only -->
         <div onclick="startSuperOfferFlow()" class="cursor-pointer p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/70 border-2 border-indigo-300 shadow-md flex justify-between items-center active:scale-95 transition">
           <div class="space-y-1">
             <div class="flex items-center gap-2">
@@ -69,7 +71,7 @@
               <span class="text-xs font-extrabold text-amber-500">🎁 Guaranteed 1,000 Coins</span>
             </div>
             <h4 class="font-black text-xl text-indigo-950">Install & Earn 1,000 Coins</h4>
-            <p class="text-xs text-slate-500">Number Captcha Inside • Collect 25 💎 to Unlock</p>
+            <p class="text-xs text-slate-500">Play Number Quiz Inside • Collect 25 💎 to Unlock</p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md">
             <i class="fa-solid fa-play"></i>
@@ -113,8 +115,11 @@
       <!-- ================= TAB 3: PROFILE ================= -->
       <div id="tab-profile" class="space-y-4 hidden">
         <div class="p-4 rounded-2xl border bg-white shadow-sm flex items-center gap-4">
-          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center shadow-md">U</div>
-          <div><h3 id="profile-name-display" class="font-bold text-slate-800 text-sm">User</h3><p id="profile-email-display" class="text-xs text-slate-500"></p></div>
+          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center overflow-hidden shadow-md">U</div>
+          <div class="overflow-hidden">
+            <h3 id="profile-name-display" class="font-bold text-slate-800 text-sm truncate">User</h3>
+            <p id="profile-email-display" class="text-xs text-slate-500 truncate"></p>
+          </div>
         </div>
 
         <div class="p-4 rounded-2xl border bg-white shadow-sm space-y-2.5">
@@ -129,7 +134,7 @@
 
     </main>
 
-    <!-- ================= SCREEN 2: NUMBER CAPTCHA QUIZ INSIDE SUPER OFFER (< 25 💎) ================= -->
+    <!-- ================= SCREEN 2: NUMBER CAPTCHA QUIZ INSIDE SUPER OFFER ================= -->
     <div id="quiz-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col justify-between">
       <div class="px-5 pt-4 pb-3 flex justify-between items-center bg-white border-b sticky top-0 z-10">
         <button onclick="closeQuizScreen()" class="text-slate-700 text-lg"><i class="fa-solid fa-arrow-left"></i></button>
@@ -154,7 +159,7 @@
           </div>
         </div>
 
-        <!-- Big 4-Digit Card -->
+        <!-- 4-Digit Card -->
         <div class="w-64 h-52 mx-auto rounded-3xl bg-gradient-to-b from-indigo-50/80 via-blue-50/60 to-purple-50/80 border border-indigo-100 shadow-sm flex items-center justify-center relative overflow-hidden">
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-4 left-8"></div>
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-8 right-12"></div>
@@ -299,7 +304,7 @@
       </div>
     </div>
 
-    <!-- ================= SCREEN 5: FINAL RETENTION DETAIL SCREEN ================= -->
+    <!-- Screen 5: Detail & Retention -->
     <div id="detail-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col">
       <div class="px-5 pt-4 pb-3 flex items-center gap-3 bg-white border-b sticky top-0 z-10">
         <button onclick="closeDetailScreen()"><i class="fa-solid fa-arrow-left"></i></button>
@@ -384,6 +389,9 @@
         <div>
           <h2 id="ad-app-name" class="text-xl font-black text-white">Bixberry: Power AI</h2>
           <p id="ad-app-subtitle" class="text-xs text-slate-300">Earn Real Gift Codes & Rewards</p>
+          <div class="flex items-center justify-center gap-3 text-xs text-amber-400 font-bold mt-2">
+            <span>★ 4.3</span><span>•</span><span>1M+ Downloads</span>
+          </div>
         </div>
       </div>
       <button onclick="simulateGooglePlayInstall()" class="w-full py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-black text-sm rounded-xl shadow-lg transition">
@@ -391,7 +399,7 @@
       </button>
     </div>
 
-    <!-- PlayStore Simulation Popup -->
+    <!-- Play Store Modal Simulator -->
     <div id="playstore-modal" class="hidden absolute inset-x-0 bottom-0 bg-white rounded-t-3xl p-5 shadow-2xl z-50 text-slate-800 space-y-4 border-t">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-bold"><i id="ps-icon" class="fa-solid fa-cube"></i></div>
@@ -401,7 +409,7 @@
       <p id="ps-status-text" class="text-center text-xs font-bold text-slate-600">Downloading (0%)...</p>
     </div>
 
-    <!-- Ad Countdown Simulator -->
+    <!-- Ad Countdown -->
     <div id="ad-simulator" class="hidden absolute inset-0 bg-black text-white z-50 flex flex-col items-center justify-center p-6 text-center space-y-3">
       <div class="animate-spin text-amber-400 text-4xl mb-2"><i class="fa-solid fa-spinner"></i></div>
       <h3 class="text-lg font-bold">Google AdMob Rewarded Ad</h3>
@@ -409,7 +417,7 @@
       <p id="ad-timer" class="text-xs text-slate-400">Watching video ad...</p>
     </div>
 
-    <!-- Bottom Nav -->
+    <!-- Nav Bar -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t flex justify-around items-center px-4 z-20">
       <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-indigo-600 w-16"><i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
       <button onclick="switchTab('wallet')" id="nav-btn-wallet" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold mt-1">Wallet</span></button>
@@ -417,21 +425,34 @@
     </nav>
 
     <!-- Google Login Modal -->
-    <div id="login-modal" class="hidden absolute inset-0 bg-white z-50 flex flex-col justify-center px-6 space-y-4">
-      <div class="text-center space-y-1">
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl shadow-lg"><i class="fa-solid fa-bolt"></i></div>
-        <h2 class="text-2xl font-black text-slate-900">Quiz & Earn</h2><p class="text-xs text-slate-500">Sign in to start earning rewards</p>
+    <div id="login-modal" class="hidden absolute inset-0 bg-white z-50 flex flex-col justify-center px-6 space-y-5">
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl shadow-xl shadow-indigo-100">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h2 class="text-2xl font-black text-slate-900">Quiz & Earn</h2>
+        <p class="text-xs text-slate-500">Sign in with Google to start earning rewards</p>
       </div>
-      <div class="space-y-3 pt-2">
-        <input id="login-name" type="text" placeholder="Your Full Name" class="w-full p-3 border rounded-xl text-xs outline-none focus:ring-1 focus:ring-indigo-500" />
-        <input id="login-email" type="email" placeholder="Your Gmail Address" class="w-full p-3 border rounded-xl text-xs outline-none focus:ring-1 focus:ring-indigo-500" />
-        <button onclick="loginUser()" class="w-full py-3.5 bg-slate-900 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2"><i class="fa-brands fa-google text-red-500"></i> Continue with Google</button>
+      <div class="flex flex-col items-center justify-center pt-4 space-y-3">
+        <div id="g_id_signin"></div>
+        <button onclick="triggerGoogleOneTap()" class="w-full py-3 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md">
+          <i class="fa-brands fa-google text-red-500"></i> Continue with Google
+        </button>
       </div>
     </div>
-  </div>
+                <script>
+    const GOOGLE_CLIENT_ID = "1078470108682-mfuoslrtdn9l4fjp201663m3c0umb5ir.apps.googleusercontent.com";
+    const ADMOB_REWARDED_AD_UNIT_ID = "ca-app-pub-5787453615296015/1309961555";
 
-  <script>
-    let currentUser = { name: "User", email: "user@gmail.com", coins: 0, diamonds: 0, completedOffers: 0 };
+    let currentUser = {
+      name: "User",
+      email: "user@gmail.com",
+      avatar: "",
+      coins: 0,
+      diamonds: 0,
+      completedOffers: 0
+    };
+
     let quizSubCount = 0;
     let targetNumber = 8508;
     let dynamicAppInstalled = false;
@@ -455,23 +476,61 @@
       }
     }
 
-    async function loginUser() {
-      const name = document.getElementById('login-name').value.trim();
-      const email = document.getElementById('login-email').value.trim().toLowerCase();
-      if (!name || !email) return alert("Fill in name and email.");
-      currentUser.name = name;
-      currentUser.email = email;
-      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
-      document.getElementById('login-modal').classList.add('hidden');
-      renderUI();
-      apiRequest('/api/auth/login', 'POST', { name, email });
+    function initGoogleAuth() {
+      if (typeof google === 'undefined') return;
+
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleSignInResponse,
+        auto_select: false
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        { theme: "filled_blue", size: "large", width: 280, shape: "pill" }
+      );
+
+      google.accounts.id.prompt();
+    }
+
+    function triggerGoogleOneTap() {
+      if (typeof google !== 'undefined') {
+        google.accounts.id.prompt();
+      }
+    }
+
+    function handleGoogleSignInResponse(response) {
+      try {
+        const base64Url = response.credential.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+
+        currentUser.name = payload.name || "User";
+        currentUser.email = payload.email;
+        currentUser.avatar = payload.picture || "";
+
+        localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+        document.getElementById('login-modal').classList.add('hidden');
+        renderUI();
+
+        apiRequest('/api/auth/login', 'POST', { name: currentUser.name, email: currentUser.email, avatar: currentUser.avatar });
+      } catch (err) {
+        console.error("Google login error", err);
+      }
     }
 
     function renderUI() {
       document.getElementById('home-username').innerText = `${currentUser.name} 👋`;
       document.getElementById('profile-name-display').innerText = currentUser.name;
       document.getElementById('profile-email-display').innerText = currentUser.email;
-      document.getElementById('profile-avatar').innerText = currentUser.name.charAt(0).toUpperCase();
+
+      const avatarBox = document.getElementById('profile-avatar');
+      if (currentUser.avatar) {
+        avatarBox.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover rounded-full" />`;
+      } else {
+        avatarBox.innerText = currentUser.name.charAt(0).toUpperCase();
+      }
+
       document.getElementById('coin-balance').innerText = currentUser.coins.toLocaleString();
       document.getElementById('wallet-balance-display').innerText = currentUser.coins.toLocaleString();
       document.getElementById('diamond-counter').innerText = currentUser.diamonds;
@@ -764,7 +823,6 @@
 
     function claimDetailMilestone(coins, btn) {
       currentUser.coins += coins;
-      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       btn.innerText = "Claimed ✓";
       btn.disabled = true;
@@ -775,10 +833,10 @@
       currentUser.coins += 1000;
       currentUser.diamonds = 0;
       currentUser.completedOffers = (currentUser.completedOffers || 0) + 1;
-      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       alert("🎉 Super Offer Completed! 1,000 Coins added to wallet. Diamonds reset to 0/25 for your next offer!");
       closeDetailScreen();
+      apiRequest('/api/offer/claim-reward', 'POST');
     }
 
     async function submitWithdrawal(method, amountRs, coinsRequired) {
@@ -788,7 +846,6 @@
       const dest = prompt(`Enter ${method.includes('UPI') ? 'UPI ID (e.g. name@okaxis)' : 'Email for Google Play Code'}:`);
       if (!dest) return;
       currentUser.coins -= coinsRequired;
-      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       alert(`✅ Payout of ₹${amountRs} submitted to ${dest}!\n${coinsRequired.toLocaleString()} coins deducted from your balance.`);
       apiRequest('/api/wallet/withdraw', 'POST', { method, amountRs, coinsRequired, destination: dest });
@@ -816,12 +873,7 @@
       }, 1000);
     }
 
-    function handleSignOut() {
-      if (confirm("Sign out?")) {
-        localStorage.clear();
-        location.reload();
-      }
-    }
+    function handleSignOut() { if (confirm("Sign out?")) { localStorage.clear(); location.reload(); } }
 
     window.addEventListener('load', () => {
       const saved = localStorage.getItem('quizpay_user');
@@ -831,8 +883,9 @@
         renderUI();
       } else {
         document.getElementById('login-modal').classList.remove('hidden');
+        setTimeout(initGoogleAuth, 400);
       }
     });
   </script>
 </body>
-</html>
+</html>                                                                                                                                                                                                          </div>
