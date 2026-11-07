@@ -14,14 +14,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
-    const initialData = { users: {}, usedImageHashes: [], withdrawals: [], reports: [] };
+    const initialData = { users: {}, deviceLocks: {}, usedImageHashes: [], withdrawals: [], reports: [] };
     fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
     return initialData;
   }
   try {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch (e) {
-    return { users: {}, usedImageHashes: [], withdrawals: [], reports: [] };
+    return { users: {}, deviceLocks: {}, usedImageHashes: [], withdrawals: [], reports: [] };
   }
 }
 
@@ -43,14 +43,28 @@ app.all('/api/admob/ssv', (req, res) => {
   return res.status(200).send("OK");
 });
 
-// 2. User Authentication (Synced with Google Sign-In)
+// 2. User Authentication with 1 Device = 1 Google Account Lock
 app.post('/api/auth/login', (req, res) => {
-  const { email, name, avatar } = req.body;
+  const { email, name, avatar, deviceId } = req.body;
   if (!email || !email.includes('@')) {
     return res.status(400).json({ success: false, message: "Valid Gmail required." });
   }
 
   const db = loadDB();
+  if (!db.deviceLocks) db.deviceLocks = {};
+
+  // Device Lock Rule: Block multiple accounts on 1 phone
+  if (deviceId) {
+    if (db.deviceLocks[deviceId] && db.deviceLocks[deviceId] !== email) {
+      return res.status(403).json({
+        success: false,
+        banned: true,
+        message: `Security Policy: Only 1 Google account is allowed per device. This device is permanently linked to ${db.deviceLocks[deviceId]}.`
+      });
+    }
+    db.deviceLocks[deviceId] = email;
+  }
+
   if (!db.users[email]) {
     db.users[email] = {
       email,
@@ -61,12 +75,11 @@ app.post('/api/auth/login', (req, res) => {
       completedOffers: 0,
       dailyClaimed: false
     };
-    saveDB(db);
   } else if (avatar) {
     db.users[email].avatar = avatar;
-    saveDB(db);
   }
 
+  saveDB(db);
   res.json({ success: true, user: db.users[email] });
 });
 
@@ -92,7 +105,7 @@ app.post('/api/daily-checkin', (req, res) => {
   res.json({ success: true, coins: user.coins });
 });
 
-// 5. Offer Completion
+// 5. Complete Super Offer (1,000 Coins Reward)
 app.post('/api/offer/claim-reward', (req, res) => {
   const email = req.headers['x-user-email'];
   const db = loadDB();
@@ -121,16 +134,16 @@ app.post('/api/wallet/withdraw', (req, res) => {
   db.withdrawals.push({ email, method, amountRs, coinsDeducted: coinsRequired, destination, date: new Date().toISOString() });
   saveDB(db);
 
-  // Send Push Alert to your ntfy app
+  // Send Alert to your ntfy app
   fetch('https://ntfy.sh/quizpe_alerts_7891', {
     method: 'POST',
     body: `🚨 NEW WITHDRAWAL REQUEST!\n\n👤 User: ${email}\n💰 Method: ${method}\n💵 Amount: ₹${amountRs}\n🏦 Send To: ${destination}`
-  }).catch(e => console.log('ntfy alert error:', e));
+  }).catch(e => console.log('ntfy error:', e));
 
   res.json({ success: true, newCoins: user.coins, message: `Payout of ₹${amountRs} submitted!` });
 });
 
-// 7. Instant Test Notification Endpoint (Tap in browser to test ntfy)
+// 7. Instant Test Notification Route
 app.get('/api/test-alert', (req, res) => {
   fetch('https://ntfy.sh/quizpe_alerts_7891', {
     method: 'POST',
@@ -150,5 +163,5 @@ app.post('/api/support/report', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server active on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
