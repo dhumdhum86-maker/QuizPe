@@ -29,10 +29,10 @@ function saveDB(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
-// 1. OFFICIAL GOOGLE ADMOB SSV CALLBACK ROUTE (Returns 200 OK to AdMob)
+// 1. Google AdMob SSV Route (Returns 200 OK to AdMob)
 app.all('/api/admob/ssv', (req, res) => {
   const { user_id, reward_amount } = req.query;
-  console.log(`[ADMOB SSV] Received verification/reward ping from Google. User: ${user_id}`);
+  console.log(`[ADMOB SSV] Ping received for user: ${user_id}`);
   if (user_id) {
     const db = loadDB();
     if (db.users[user_id]) {
@@ -43,26 +43,9 @@ app.all('/api/admob/ssv', (req, res) => {
   return res.status(200).send("OK");
 });
 
-// 2. VPN & Proxy Security Middleware
-app.use((req, res, next) => {
-  if (req.headers['x-vpn-detected'] === 'true') {
-    const userEmail = req.headers['x-user-email'];
-    if (userEmail) {
-      const db = loadDB();
-      if (db.users[userEmail]) {
-        db.users[userEmail].isBanned = true;
-        db.users[userEmail].banReason = "VPN/Proxy connection detected.";
-        saveDB(db);
-      }
-    }
-    return res.status(403).json({ success: false, banned: true, message: "VPN prohibited." });
-  }
-  next();
-});
-
-// 3. User Login / Registration
+// 2. User Authentication (Synced with Google Sign-In)
 app.post('/api/auth/login', (req, res) => {
-  const { email, name } = req.body;
+  const { email, name, avatar } = req.body;
   if (!email || !email.includes('@')) {
     return res.status(400).json({ success: false, message: "Valid Gmail required." });
   }
@@ -72,22 +55,22 @@ app.post('/api/auth/login', (req, res) => {
     db.users[email] = {
       email,
       name: name || email.split('@')[0],
+      avatar: avatar || "",
       coins: 0,
       diamonds: 0,
       completedOffers: 0,
-      dailyClaimed: false,
-      isBanned: false
+      dailyClaimed: false
     };
+    saveDB(db);
+  } else if (avatar) {
+    db.users[email].avatar = avatar;
     saveDB(db);
   }
 
-  const user = db.users[email];
-  if (user.isBanned) return res.status(403).json({ success: false, banned: true });
-
-  res.json({ success: true, user });
+  res.json({ success: true, user: db.users[email] });
 });
 
-// 4. Fetch User Profile
+// 3. Fetch User
 app.get('/api/user', (req, res) => {
   const email = req.headers['x-user-email'];
   const db = loadDB();
@@ -96,7 +79,7 @@ app.get('/api/user', (req, res) => {
   res.json({ success: true, user });
 });
 
-// 5. Daily Check-in Bonus
+// 4. Daily Streak Bonus
 app.post('/api/daily-checkin', (req, res) => {
   const email = req.headers['x-user-email'];
   const db = loadDB();
@@ -109,29 +92,21 @@ app.post('/api/daily-checkin', (req, res) => {
   res.json({ success: true, coins: user.coins });
 });
 
-// 6. Screenshot Upload & Verification
-app.post('/api/offer/submit-screenshot', (req, res) => {
+// 5. Offer Completion
+app.post('/api/offer/claim-reward', (req, res) => {
   const email = req.headers['x-user-email'];
-  const { screenshotBase64 } = req.body;
   const db = loadDB();
   const user = db.users[email];
+  if (!user) return res.status(404).json({ success: false });
 
-  if (!user) return res.status(400).json({ success: false, message: "No active user." });
-
-  const hash = crypto.createHash('sha256').update(screenshotBase64).digest('hex');
-  if (db.usedImageHashes.includes(hash)) {
-    user.isBanned = true;
-    user.banReason = "Fraud Detected: Duplicate screenshot reused.";
-    saveDB(db);
-    return res.status(403).json({ success: false, banned: true, banReason: user.banReason });
-  }
-
-  db.usedImageHashes.push(hash);
+  user.coins += 1000;
+  user.diamonds = 0;
+  user.completedOffers = (user.completedOffers || 0) + 1;
   saveDB(db);
-  res.json({ success: true, message: "Screenshot verified!" });
+  res.json({ success: true, user });
 });
 
-// 7. Wallet Withdrawals
+// 6. Wallet Withdrawal with Instant ntfy Push Alert
 app.post('/api/wallet/withdraw', (req, res) => {
   const email = req.headers['x-user-email'];
   const { method, amountRs, coinsRequired, destination } = req.body;
@@ -146,10 +121,25 @@ app.post('/api/wallet/withdraw', (req, res) => {
   db.withdrawals.push({ email, method, amountRs, coinsDeducted: coinsRequired, destination, date: new Date().toISOString() });
   saveDB(db);
 
-  res.json({ success: true, newCoins: user.coins });
+  // Send Push Alert to your ntfy app
+  fetch('https://ntfy.sh/quizpe_alerts_7891', {
+    method: 'POST',
+    body: `🚨 NEW WITHDRAWAL REQUEST!\n\n👤 User: ${email}\n💰 Method: ${method}\n💵 Amount: ₹${amountRs}\n🏦 Send To: ${destination}`
+  }).catch(e => console.log('ntfy alert error:', e));
+
+  res.json({ success: true, newCoins: user.coins, message: `Payout of ₹${amountRs} submitted!` });
 });
 
-// 8. Support Issue Report
+// 7. Instant Test Notification Endpoint (Tap in browser to test ntfy)
+app.get('/api/test-alert', (req, res) => {
+  fetch('https://ntfy.sh/quizpe_alerts_7891', {
+    method: 'POST',
+    body: '🎉 Test Notification! Your QuizPe alert system is working 100%!'
+  });
+  res.send("Alert sent! Check your ntfy app now.");
+});
+
+// 8. Report an Issue
 app.post('/api/support/report', (req, res) => {
   const { subject, description } = req.body;
   const email = req.headers['x-user-email'];
@@ -160,5 +150,5 @@ app.post('/api/support/report', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server active on port ${PORT}`);
 });
