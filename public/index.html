@@ -692,18 +692,19 @@ function onAdSkippedFromKodular() {
         btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Loading Ad...`;
         btn.disabled = true;
 
-        setTimeout(() => {
-          btn.disabled = false;
-          document.getElementById('dynamic-ad-modal').classList.remove('hidden');
-
-          let sec = 8;
-          const timerEl = document.getElementById('admob-timer');
-          const t = setInterval(() => {
-            sec--;
-            if (sec > 0) timerEl.innerText = `Reward in ${sec}s`;
-            else { clearInterval(t); timerEl.innerText = "Ad Finished ✓"; }
-          }, 1000);
-        }, 1000);
+        callAdBridge(
+  () => {
+    btn.disabled = false;
+    superOfferStage = 'ad_completed';
+    btn.innerText = "Verify & Continue";
+    showToast("Ad watched! Now continue offer");
+  },
+  () => {
+    btn.disabled = false;
+    btn.innerText = "Start Offer";
+    showToast("Please watch full ad to continue");
+  }
+);
 
       } else if (superOfferStage === 'ad_completed') {
         btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Verifying...`;
