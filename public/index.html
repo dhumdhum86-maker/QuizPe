@@ -464,6 +464,20 @@
       document.getElementById('wallet-balance-display').innerText = currentUser.coins.toLocaleString();
       document.getElementById('diamond-counter').innerText = currentUser.diamonds;
       document.getElementById('header-gift-counter').innerText = currentUser.completedOffers || 0;
+      // Check if Daily Streak was already claimed today
+      const today = new Date().toDateString();
+      const checkinBtn = document.getElementById('checkin-btn');
+      if (checkinBtn) {
+        if (currentUser.lastCheckinDate === today) {
+          checkinBtn.innerText = "Claimed ✓";
+          checkinBtn.disabled = true;
+          checkinBtn.className = "px-3.5 py-1.5 rounded-lg bg-slate-200 text-slate-400 text-xs font-bold cursor-not-allowed";
+        } else {
+          checkinBtn.innerText = "Claim";
+          checkinBtn.disabled = false;
+          checkinBtn.className = "px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition";
+        }
+      }
 
       updateWalletButton('btn-withdraw-gp-50', currentUser.coins >= 7000, "Withdraw ₹50 Code", "Need 7,000 Coins");
       updateWalletButton('btn-withdraw-gp-100', currentUser.coins >= 13600, "Withdraw ₹100 Code", "Need 13,600 Coins");
