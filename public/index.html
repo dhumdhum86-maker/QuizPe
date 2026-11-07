@@ -493,14 +493,23 @@
       document.getElementById(`nav-btn-${t}`).classList.replace('text-slate-400', 'text-indigo-600');
     }
 
-    function claimDailyCheckin() {
-      currentUser.coins += 50;
-      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
-      renderUI();
-      document.getElementById('checkin-btn').innerText = "Claimed ✓";
-      document.getElementById('checkin-btn').disabled = true;
-      showToast("🎉 +50 Coins claimed!");
-      apiRequest('/api/daily-checkin', 'POST');
+    async function claimDailyCheckin() {
+      const today = new Date().toDateString();
+      if (currentUser.lastCheckinDate === today) {
+        showToast("Already claimed today! Come back tomorrow.");
+        return;
+      }
+
+      const data = await apiRequest('/api/daily-checkin', 'POST');
+      if (data && data.success) {
+        currentUser.coins = data.coins;
+        currentUser.lastCheckinDate = today;
+        localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+        renderUI();
+        showToast("🎉 +50 Coins claimed!");
+      } else if (data && data.message) {
+        showToast(data.message);
+      }
     }
 
     // ================= SUPER OFFER FLOW =================
