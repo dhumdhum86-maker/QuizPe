@@ -650,14 +650,22 @@
     }
 
     function callAdBridge(onCompleted, onSkipped) {
-      if (window.Android && window.Android.showRewardedAd) {
-        window.Android.showRewardedAd(ADMOB_REWARDED_AD_UNIT_ID, UNITY_PLACEMENT_ID);
-        window.onAdMobReward = onCompleted;
-        window.onAdMobDismissed = onSkipped;
-      } else {
-        setTimeout(onCompleted, 2500);
-      }
-    }
+  if (window.AppInventor) {
+    window._adCompleted = onCompleted;
+    window._adSkipped = onSkipped;
+    window.AppInventor.setWebViewString("SHOW_AD");
+    return;
+  }
+  setTimeout(onCompleted, 2500);
+}
+
+function onAdCompletedFromKodular() {
+  if (window._adCompleted) window._adCompleted();
+}
+
+function onAdSkippedFromKodular() {
+  if (window._adSkipped) window._adSkipped();
+}
 
     function testSetDiamonds(qty) {
       currentUser.diamonds = qty;
