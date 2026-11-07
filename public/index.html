@@ -34,7 +34,7 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto no-sb p-4 pb-20">
 
-      <!-- ================= 1. HOME TAB (NO OUTSIDE QUIZ) ================= -->
+      <!-- ================= TAB 1: HOME (ONLY SUPER OFFER) ================= -->
       <div id="tab-home" class="space-y-4">
         <div class="flex justify-between items-center">
           <div><p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p><h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2></div>
@@ -59,11 +59,10 @@
         </div>
 
         <div class="pt-2 flex justify-between items-end">
-          <div><h3 class="text-sm font-black text-slate-900 tracking-tight">Super Offer</h3><p class="text-[11px] text-slate-400">Play number captchas inside, collect 25 💎, & earn 1,000 Coins</p></div>
+          <div><h3 class="text-sm font-black text-slate-900 tracking-tight">Super Offer Task</h3><p class="text-[11px] text-slate-400">Play number captchas inside, collect 25 💎, & earn 1,000 Coins</p></div>
           <button onclick="testSetDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2 py-1 rounded active:scale-95">+25 💎 (Test)</button>
         </div>
 
-        <!-- Super Offer Card Only -->
         <div onclick="startSuperOfferFlow()" class="cursor-pointer p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/70 border-2 border-indigo-300 shadow-md flex justify-between items-center active:scale-95 transition">
           <div class="space-y-1">
             <div class="flex items-center gap-2">
@@ -115,7 +114,7 @@
       <!-- ================= TAB 3: PROFILE ================= -->
       <div id="tab-profile" class="space-y-4 hidden">
         <div class="p-4 rounded-2xl border bg-white shadow-sm flex items-center gap-4">
-          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center overflow-hidden shadow-md">U</div>
+          <div id="profile-avatar" class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-600 text-white font-black text-lg flex items-center justify-center overflow-hidden">U</div>
           <div class="overflow-hidden">
             <h3 id="profile-name-display" class="font-bold text-slate-800 text-sm truncate">User</h3>
             <p id="profile-email-display" class="text-xs text-slate-500 truncate"></p>
@@ -150,7 +149,6 @@
       </div>
 
       <div class="flex-1 overflow-y-auto no-sb p-5 flex flex-col justify-between space-y-4">
-        <!-- 0/2 Dots -->
         <div class="text-center pt-2">
           <div class="inline-flex items-center gap-1.5 text-xs font-black text-slate-400">
             <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
@@ -159,7 +157,6 @@
           </div>
         </div>
 
-        <!-- 4-Digit Card -->
         <div class="w-64 h-52 mx-auto rounded-3xl bg-gradient-to-b from-indigo-50/80 via-blue-50/60 to-purple-50/80 border border-indigo-100 shadow-sm flex items-center justify-center relative overflow-hidden">
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-4 left-8"></div>
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-8 right-12"></div>
@@ -171,7 +168,6 @@
           <div id="captcha-options-grid" class="grid grid-cols-2 gap-3 max-w-xs mx-auto"></div>
         </div>
 
-        <!-- 25 Diamond Progress Section -->
         <div class="space-y-1.5 max-w-xs mx-auto w-full pt-2">
           <div class="flex justify-between items-center text-xs font-black">
             <span class="text-slate-800">Super Offer</span>
@@ -183,14 +179,37 @@
           <div class="flex justify-between items-center text-[10px] font-bold text-slate-400 px-0.5">
             <span>5</span><span>10</span><span>15</span><span>20</span><span>🎁</span>
           </div>
-          <p class="text-center text-[11px] font-medium text-slate-500 pt-1">
-            Complete 25 captchas for Guaranteed 1000 Coins!
-          </p>
+          <p class="text-center text-[11px] font-medium text-slate-500 pt-1">Complete 25 captchas for Guaranteed 1000 Coins!</p>
         </div>
 
-        <button onclick="alert(`Completed offers: ${currentUser.completedOffers || 0}`)" class="w-full max-w-xs mx-auto py-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition">
+        <button onclick="alert(`Completed offers: ${currentUser.completedOffers || 0}`)" class="w-full max-w-xs mx-auto py-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm flex items-center justify-center gap-2">
           <i class="fa-solid fa-gift"></i> My Offers <span id="quiz-bottom-offers-count" class="bg-indigo-600 text-white rounded-full px-2 py-0.5 text-xs">0</span>
         </button>
+      </div>
+    </div>
+
+    <!-- ================= SCREEN 2B: CONGRATULATIONS INTERMEDIATE SCREEN ================= -->
+    <div id="congrats-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col justify-between p-6 text-center">
+      <div class="flex justify-between items-center">
+        <button onclick="document.getElementById('congrats-screen').classList.add('hidden')" class="text-slate-700 text-lg"><i class="fa-solid fa-arrow-left"></i></button>
+        <h3 class="font-black text-base">Quiz</h3>
+        <div class="flex gap-1.5 text-xs font-black"><span class="bg-indigo-50 border px-2 py-0.5 rounded-full text-indigo-700">🎁 <span id="cg-gift">0</span></span><span class="bg-sky-50 border px-2 py-0.5 rounded-full text-sky-700">💎 <span id="cg-diamond">0</span></span></div>
+      </div>
+      <div class="space-y-4 my-auto">
+        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 to-yellow-500 text-white flex items-center justify-center text-4xl shadow-xl shadow-amber-300/50">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h2 class="text-2xl font-black text-slate-900">Congratulations!</h2>
+        <div class="inline-block bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm px-4 py-1.5 rounded-full">
+          💎 +1 Gem
+        </div>
+        <p id="cg-unlock-text" class="text-xs text-slate-500 font-bold">0/25 gems to unlock Super Offer</p>
+      </div>
+      <div class="space-y-2 pb-6 max-w-xs mx-auto w-full">
+        <button id="btn-collect-gem" onclick="startThreeAdChain()" class="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
+          <i class="fa-solid fa-play text-xs"></i> Collect Gem
+        </button>
+        <p class="text-[11px] text-slate-400">Watch 3 ads to collect your gem</p>
       </div>
     </div>
 
@@ -227,7 +246,7 @@
       </div>
     </div>
 
-    <!-- ================= SCREEN 4: SUPER OFFER TASK & DYNAMIC AD SCREEN ================= -->
+    <!-- ================= SCREEN 4: SUPER OFFER TASK & INSTALL FLOW ================= -->
     <div id="super-offer-screen" class="hidden absolute inset-0 bg-white z-40 flex flex-col">
       <div class="px-5 pt-4 pb-3 flex justify-between items-center border-b">
         <button onclick="closeSuperOfferScreen()" class="text-slate-700"><i class="fa-solid fa-arrow-left"></i></button>
@@ -241,9 +260,9 @@
           <p class="text-sm font-black text-amber-500">🎁 Guaranteed 1,000 Coins!</p>
         </div>
 
-        <div id="error-app-not-detected" class="hidden p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs space-y-1">
+        <div id="error-app-not-detected" class="hidden p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs">
           <strong class="flex items-center gap-1.5 text-red-600 font-bold"><i class="fa-solid fa-circle-exclamation"></i> App Not Detected</strong>
-          <p>We couldn't find a newly installed app. Please install the app from the ad and try again.</p>
+          <p class="mt-0.5">We couldn't find a newly installed app. Please install the app from the ad and try again.</p>
         </div>
 
         <div id="so-step-1" class="p-3.5 rounded-2xl border bg-emerald-50 border-emerald-300 flex justify-between items-center">
@@ -259,7 +278,7 @@
             <div id="so-step-2-icon" class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-lg"><i class="fa-solid fa-cloud-arrow-down"></i></div>
             <div><h4 class="text-xs font-bold">Install the app</h4><p class="text-[10px] text-slate-500">Download and install the advertised app</p></div>
           </div>
-          <p class="text-[10px] text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-200 leading-tight">
+          <p class="text-[10px] text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-200">
             ⚠️ If you already have a pending offer for the app shown in the ad, skip and try a different app.
           </p>
         </div>
@@ -304,93 +323,21 @@
       </div>
     </div>
 
-    <!-- Screen 5: Detail & Retention -->
-    <div id="detail-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col">
-      <div class="px-5 pt-4 pb-3 flex items-center gap-3 bg-white border-b sticky top-0 z-10">
-        <button onclick="closeDetailScreen()"><i class="fa-solid fa-arrow-left"></i></button>
-        <h3 id="detail-header-title" class="font-black text-sm truncate">App Name</h3>
-      </div>
-      <div class="flex-1 overflow-y-auto no-sb p-4 space-y-3 pb-8">
-        <div class="p-4 rounded-2xl bg-white border shadow-sm flex items-center gap-3.5">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-50 border flex items-center justify-center text-indigo-600 text-2xl">
-            <i id="detail-app-icon" class="fa-solid fa-cube"></i>
-          </div>
-          <div>
-            <h3 id="detail-app-name" class="font-black text-sm">Bixberry: Power AI</h3>
-            <p id="detail-package-name" class="text-xs text-slate-400">com.bixberry.app</p>
-            <p id="detail-installed-time" class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1 font-semibold">
-              <i class="fa-regular fa-clock"></i> Installed just now
-            </p>
-          </div>
-        </div>
-
-        <span class="text-[11px] font-black uppercase text-slate-400">Rewards (1,000 Coins Total)</span>
-
-        <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">Initial Install Reward</h4><p class="text-[10px] text-slate-500">Install app and meet usage requirement</p></div>
-          <div class="text-right"><span class="text-xs font-black text-indigo-700">🪙 100</span><p class="text-[10px] font-bold text-emerald-600">Approved ✓</p></div>
-        </div>
-
-        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
-          <div class="flex justify-between items-center"><div><h4 class="text-xs font-bold">Immediate</h4><p class="text-[10px] text-slate-500">Sign up in app & upload screenshot</p></div><span class="text-xs font-black text-indigo-700">🪙 350</span></div>
-          <div id="detail-upload-box" class="space-y-1">
-            <input type="file" id="detail-screenshot-input" accept="image/*" class="text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded file:bg-amber-600 file:text-white" />
-            <button onclick="submitDetailScreenshot()" class="w-full py-1.5 bg-amber-500 text-white font-bold text-xs rounded-lg">Upload Login Proof</button>
-          </div>
-          <div id="detail-pending-box" class="hidden p-2.5 rounded-xl bg-amber-100 border border-amber-300 text-[11px] text-amber-900 font-medium">
-            🕒 <strong>Pending Review:</strong> Your screenshot is under admin review. Coins will be awarded after approval.
-          </div>
-        </div>
-
-        <div class="p-3 rounded-2xl bg-white border flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">After 3h 6m</h4><p class="text-[10px] text-slate-400">Use app for 1 more minute</p><button onclick="claimDetailMilestone(100, this)" class="mt-1 text-[10px] font-bold text-indigo-600 bg-indigo-50 border px-2 py-0.5 rounded">Claim 100 Coins (Test)</button></div>
-          <span class="text-xs font-black text-indigo-700">🪙 100</span>
-        </div>
-
-        <div class="p-3 rounded-2xl bg-white border flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">After 4h 53m</h4><p class="text-[10px] text-slate-400">Use app for 1 more minute</p></div>
-          <span class="text-xs font-black text-indigo-700">🪙 100</span>
-        </div>
-
-        <div class="p-3 rounded-2xl bg-white border flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">After 9h 53m</h4><p class="text-[10px] text-slate-400">Use app for 1 more minute</p></div>
-          <span class="text-xs font-black text-indigo-700">🪙 25</span>
-        </div>
-
-        <div class="p-3 rounded-2xl bg-white border flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">After 24h 53m</h4><p class="text-[10px] text-slate-400">Use app for 5 more minutes</p></div>
-          <span class="text-xs font-black text-indigo-700">🪙 200</span>
-        </div>
-
-        <div class="p-3 rounded-2xl bg-white border flex justify-between items-center">
-          <div><h4 class="text-xs font-bold">🎁 Bonus • After 30h 0m</h4><p class="text-[10px] text-slate-400">Use app for 12 more minutes</p></div>
-          <div class="text-right"><span class="text-xs font-black text-indigo-700">🪙 125</span><p class="text-[10px] text-slate-400 underline cursor-pointer">skip</p></div>
-        </div>
-
-        <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-center">
-          <span class="text-xs font-bold text-slate-500">Total Potential Earnings</span>
-          <div class="text-2xl font-black text-indigo-700">🪙 1000 Coins</div>
-        </div>
-
-        <button onclick="finishOfferAndReset()" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Complete Offer & Reset Diamonds to 0/25</button>
-      </div>
-    </div>
-
     <!-- Dynamic AdMob Modal -->
     <div id="dynamic-ad-modal" class="hidden absolute inset-0 bg-slate-900 z-50 flex flex-col justify-between p-6 text-white text-center">
       <div class="flex justify-between items-center text-xs text-slate-400">
-        <span class="bg-slate-800 px-2.5 py-1 rounded">AdMob Rewarded Video</span>
+        <span class="bg-slate-800 px-2.5 py-1 rounded">AdMob Sponsored</span>
         <span id="admob-timer">Reward in 8s</span>
       </div>
       <div class="space-y-4 my-auto">
         <div class="w-20 h-20 mx-auto rounded-3xl bg-indigo-600 flex items-center justify-center text-4xl shadow-xl">
-          <i id="ad-app-icon" class="fa-solid fa-cube"></i>
+          <i class="fa-solid fa-mobile-screen"></i>
         </div>
         <div>
-          <h2 id="ad-app-name" class="text-xl font-black text-white">Bixberry: Power AI</h2>
-          <p id="ad-app-subtitle" class="text-xs text-slate-300">Earn Real Gift Codes & Rewards</p>
+          <h2 id="ad-app-name" class="text-xl font-black text-white">Sponsored App</h2>
+          <p id="ad-app-subtitle" class="text-xs text-slate-300">Install to complete Super Offer</p>
           <div class="flex items-center justify-center gap-3 text-xs text-amber-400 font-bold mt-2">
-            <span>★ 4.3</span><span>•</span><span>1M+ Downloads</span>
+            <span>★ 4.5</span><span>•</span><span>Play Store Verified</span>
           </div>
         </div>
       </div>
@@ -402,68 +349,49 @@
     <!-- Play Store Modal Simulator -->
     <div id="playstore-modal" class="hidden absolute inset-x-0 bottom-0 bg-white rounded-t-3xl p-5 shadow-2xl z-50 text-slate-800 space-y-4 border-t">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-bold"><i id="ps-icon" class="fa-solid fa-cube"></i></div>
-        <div><h4 id="ps-title" class="font-bold text-sm">Bixberry</h4><p id="ps-package" class="text-[11px] text-slate-400">Verified by Play Protect</p></div>
+        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-bold"><i class="fa-solid fa-mobile-screen"></i></div>
+        <div><h4 id="ps-title" class="font-bold text-sm">Sponsored App</h4><p class="text-[11px] text-slate-400">Verified by Play Protect</p></div>
       </div>
       <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden"><div id="ps-install-bar" class="h-full bg-emerald-500 w-0 transition-all duration-300"></div></div>
       <p id="ps-status-text" class="text-center text-xs font-bold text-slate-600">Downloading (0%)...</p>
     </div>
 
-    <!-- Ad Countdown -->
-    <div id="ad-simulator" class="hidden absolute inset-0 bg-black text-white z-50 flex flex-col items-center justify-center p-6 text-center space-y-3">
-      <div class="animate-spin text-amber-400 text-4xl mb-2"><i class="fa-solid fa-spinner"></i></div>
-      <h3 class="text-lg font-bold">Google AdMob Rewarded Ad</h3>
-      <p class="text-[10px] text-slate-500 font-mono">Unit: ca-app-pub-5787453615296015/1309961555</p>
-      <p id="ad-timer" class="text-xs text-slate-400">Watching video ad...</p>
-    </div>
-
-    <!-- Nav Bar -->
+    <!-- Navigation -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t flex justify-around items-center px-4 z-20">
       <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-indigo-600 w-16"><i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
       <button onclick="switchTab('wallet')" id="nav-btn-wallet" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold mt-1">Wallet</span></button>
       <button onclick="switchTab('profile')" id="nav-btn-profile" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-user text-lg"></i><span class="text-[10px] font-bold mt-1">Profile</span></button>
     </nav>
 
-    <!-- Google Login Modal -->
+    <!-- Google Login Modal (ONE SINGLE BUTTON) -->
     <div id="login-modal" class="hidden absolute inset-0 bg-white z-50 flex flex-col justify-center px-6 space-y-5">
       <div class="text-center space-y-2">
-        <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl shadow-xl shadow-indigo-100">
-          <i class="fa-solid fa-bolt"></i>
-        </div>
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl shadow-xl shadow-indigo-100"><i class="fa-solid fa-bolt"></i></div>
         <h2 class="text-2xl font-black text-slate-900">Quiz & Earn</h2>
         <p class="text-xs text-slate-500">Sign in with Google to start earning rewards</p>
       </div>
-      <div class="flex flex-col items-center justify-center pt-4 space-y-3">
+      <div class="flex flex-col items-center justify-center pt-4">
         <div id="g_id_signin"></div>
-        <button onclick="triggerGoogleOneTap()" class="w-full py-3 bg-slate-900 hover:bg-black text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md">
-          <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-        </button>
       </div>
     </div>
-                <script>
+  </div>
+  <script>
     const GOOGLE_CLIENT_ID = "1078470108682-mfuoslrtdn9l4fjp201663m3c0umb5ir.apps.googleusercontent.com";
     const ADMOB_REWARDED_AD_UNIT_ID = "ca-app-pub-5787453615296015/1309961555";
 
-    let currentUser = {
-      name: "User",
-      email: "user@gmail.com",
-      avatar: "",
-      coins: 0,
-      diamonds: 0,
-      completedOffers: 0
-    };
-
+    let currentUser = { name: "User", email: "user@gmail.com", avatar: "", coins: 0, diamonds: 0, completedOffers: 0 };
     let quizSubCount = 0;
     let targetNumber = 8508;
+    let adsWatchedChain = 0;
     let dynamicAppInstalled = false;
-    let installedAppDetails = null;
     let superOfferStage = 'initial';
 
-    const dynamicAdPool = [
-      { name: "Bixberry: Power AI", package: "com.bixberry.app", icon: "fa-cube", subtitle: "Earn Real Gift Codes & Rewards" },
-      { name: "Netmeds: Healthcare", package: "com.netmeds.app", icon: "fa-heart-pulse", subtitle: "Order Medicines & Lab Tests" },
-      { name: "Zupee: Play Games", package: "com.zupee.app", icon: "fa-gamepad", subtitle: "Play Real Games & Win Cash" }
-    ];
+    // Unique Device Fingerprint (1 Device = 1 Account Lock)
+    let deviceId = localStorage.getItem('quizpay_device_id');
+    if (!deviceId) {
+      deviceId = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      localStorage.setItem('quizpay_device_id', deviceId);
+    }
 
     async function apiRequest(ep, method = 'GET', body = null) {
       try {
@@ -476,46 +404,39 @@
       }
     }
 
+    // Google One Tap & Single Button Initializer
     function initGoogleAuth() {
       if (typeof google === 'undefined') return;
-
       google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleSignInResponse,
-        auto_select: false
+        auto_select: true
       });
-
       google.accounts.id.renderButton(
         document.getElementById("g_id_signin"),
         { theme: "filled_blue", size: "large", width: 280, shape: "pill" }
       );
-
       google.accounts.id.prompt();
     }
 
-    function triggerGoogleOneTap() {
-      if (typeof google !== 'undefined') {
-        google.accounts.id.prompt();
-      }
-    }
-
-    function handleGoogleSignInResponse(response) {
+    async function handleGoogleSignInResponse(response) {
       try {
-        const base64Url = response.credential.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const payload = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+        const payload = JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))));
+        const res = await apiRequest('/api/auth/login', 'POST', { name: payload.name, email: payload.email, avatar: payload.picture, deviceId });
+
+        if (res && res.banned) {
+          alert(res.message);
+          return;
+        }
 
         currentUser.name = payload.name || "User";
         currentUser.email = payload.email;
         currentUser.avatar = payload.picture || "";
-
         localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
         document.getElementById('login-modal').classList.add('hidden');
         renderUI();
-
-        apiRequest('/api/auth/login', 'POST', { name: currentUser.name, email: currentUser.email, avatar: currentUser.avatar });
       } catch (err) {
-        console.error("Google login error", err);
+        console.error("Auth error", err);
       }
     }
 
@@ -525,11 +446,8 @@
       document.getElementById('profile-email-display').innerText = currentUser.email;
 
       const avatarBox = document.getElementById('profile-avatar');
-      if (currentUser.avatar) {
-        avatarBox.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover rounded-full" />`;
-      } else {
-        avatarBox.innerText = currentUser.name.charAt(0).toUpperCase();
-      }
+      if (currentUser.avatar) avatarBox.innerHTML = `<img src="${currentUser.avatar}" class="w-full h-full object-cover rounded-full" />`;
+      else avatarBox.innerText = currentUser.name.charAt(0).toUpperCase();
 
       document.getElementById('coin-balance').innerText = currentUser.coins.toLocaleString();
       document.getElementById('wallet-balance-display').innerText = currentUser.coins.toLocaleString();
@@ -574,6 +492,7 @@
       apiRequest('/api/daily-checkin', 'POST');
     }
 
+    // ================= SUPER OFFER ENTRY =================
     function startSuperOfferFlow() {
       if (currentUser.diamonds < 25) {
         openQuizScreen();
@@ -590,6 +509,7 @@
     }
     function closeSuperOfferScreen() { document.getElementById('super-offer-screen').classList.add('hidden'); }
 
+    // ================= NUMBER CAPTCHA QUIZ =================
     function openQuizScreen() {
       document.getElementById('quiz-screen').classList.remove('hidden');
       updateQuizCounters();
@@ -643,23 +563,69 @@
           generateCaptchaRound();
         } else if (quizSubCount === 2) {
           quizSubCount = 0;
-          showAdCountdown(4, () => {
-            currentUser.diamonds += 1;
-            localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
-            renderUI();
-            updateQuizCounters();
-            alert(`💎 +1 Diamond claimed! (${currentUser.diamonds}/25 💎)`);
-
-            if (currentUser.diamonds >= 25) {
-              closeQuizScreen();
-              startSuperOfferFlow();
-            } else {
-              generateCaptchaRound();
-            }
-          });
+          updateQuizCounters();
+          // Open Congratulations screen
+          document.getElementById('cg-gift').innerText = currentUser.completedOffers || 0;
+          document.getElementById('cg-diamond').innerText = currentUser.diamonds;
+          document.getElementById('cg-unlock-text').innerText = `${currentUser.diamonds}/25 gems to unlock Super Offer`;
+          document.getElementById('congrats-screen').classList.remove('hidden');
         }
       } else {
         alert("Incorrect number! Please try again.");
+      }
+    }
+
+    // ================= 3 ADS = 1 DIAMOND FLOW =================
+    function startThreeAdChain() {
+      adsWatchedChain = 0;
+      playNextAdInChain();
+    }
+
+    function playNextAdInChain() {
+      const btn = document.getElementById('btn-collect-gem');
+      btn.innerText = `Watching Ad (${adsWatchedChain + 1}/3)...`;
+      btn.disabled = true;
+
+      // Real AdMob bridge in APK, direct clean timer in web
+      callAdMobAd(() => {
+        adsWatchedChain++;
+
+        if (adsWatchedChain < 3) {
+          playNextAdInChain();
+        } else {
+          adsWatchedChain = 0;
+          btn.innerText = "Collect Gem";
+          btn.disabled = false;
+          currentUser.diamonds += 1;
+          localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+          renderUI();
+          updateQuizCounters();
+          document.getElementById('congrats-screen').classList.add('hidden');
+          alert("💎 You Got 1 Diamond!");
+
+          if (currentUser.diamonds >= 25) {
+            closeQuizScreen();
+            startSuperOfferFlow(); // Open unlock screen
+          } else {
+            generateCaptchaRound();
+          }
+        }
+      }, () => {
+        adsWatchedChain = 0;
+        btn.innerText = "Collect Gem";
+        btn.disabled = false;
+        alert("Ad closed early! No diamond awarded.");
+      });
+    }
+
+    function callAdMobAd(onCompleted, onSkipped) {
+      if (window.Android && window.Android.showRewardedAd) {
+        window.Android.showRewardedAd(ADMOB_REWARDED_AD_UNIT_ID);
+        window.onAdMobReward = onCompleted;
+        window.onAdMobDismissed = onSkipped;
+      } else {
+        // Clean direct timer without fake black screen
+        setTimeout(onCompleted, 2500);
       }
     }
 
@@ -667,12 +633,11 @@
       currentUser.diamonds = qty;
       localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
-      if (!document.getElementById('quiz-screen').classList.contains('hidden')) {
-        updateQuizCounters();
-      }
+      if (!document.getElementById('quiz-screen').classList.contains('hidden')) updateQuizCounters();
       alert(`💎 Diamonds set to ${qty}!`);
     }
 
+    // ================= DYNAMIC SUPER OFFER INSTALL FLOW =================
     function resetSuperOfferUI() {
       superOfferStage = 'initial';
       dynamicAppInstalled = false;
@@ -692,12 +657,7 @@
 
         setTimeout(() => {
           btn.disabled = false;
-          const picked = dynamicAdPool[Math.floor(Math.random() * dynamicAdPool.length)];
-          installedAppDetails = { ...picked, installTimestamp: null };
-
-          document.getElementById('ad-app-name').innerText = picked.name;
-          document.getElementById('ad-app-subtitle').innerText = picked.subtitle;
-          document.getElementById('ad-app-icon').className = `fa-solid ${picked.icon}`;
+          // Serves whatever ad AdMob delivers dynamically
           document.getElementById('dynamic-ad-modal').classList.remove('hidden');
 
           let sec = 8;
@@ -729,11 +689,7 @@
     }
 
     function simulateGooglePlayInstall() {
-      document.getElementById('ps-title').innerText = installedAppDetails.name;
-      document.getElementById('ps-package').innerText = installedAppDetails.package;
-      document.getElementById('ps-icon').className = `fa-solid ${installedAppDetails.icon}`;
       document.getElementById('playstore-modal').classList.remove('hidden');
-
       let pct = 0;
       const bar = document.getElementById('ps-install-bar');
       const txt = document.getElementById('ps-status-text');
@@ -748,7 +704,6 @@
           setTimeout(() => {
             txt.innerText = "Installed ✓";
             dynamicAppInstalled = true;
-            installedAppDetails.installTimestamp = Date.now();
 
             setTimeout(() => {
               document.getElementById('playstore-modal').classList.add('hidden');
@@ -783,62 +738,19 @@
 
         if (progress >= 100) {
           clearInterval(timer);
+          currentUser.coins += 1000;
+          currentUser.diamonds = 0;
+          currentUser.completedOffers = (currentUser.completedOffers || 0) + 1;
+          localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+          renderUI();
+          alert("🎉 Super Offer Completed! 1,000 Coins added to your wallet. Diamonds reset to 0/25 for your next offer!");
           closeSuperOfferScreen();
-          openOfferDetailScreen();
+          apiRequest('/api/offer/claim-reward', 'POST');
         }
       }, 500);
     }
 
-    function openOfferDetailScreen() {
-      document.getElementById('detail-screen').classList.remove('hidden');
-      document.getElementById('detail-header-title').innerText = installedAppDetails.name;
-      document.getElementById('detail-app-name').innerText = installedAppDetails.name;
-      document.getElementById('detail-package-name').innerText = installedAppDetails.package;
-      document.getElementById('detail-app-icon').className = `fa-solid ${installedAppDetails.icon}`;
-      calculateInstalledTime();
-    }
-
-    function calculateInstalledTime() {
-      if (!installedAppDetails || !installedAppDetails.installTimestamp) return;
-      const diffMs = Date.now() - installedAppDetails.installTimestamp;
-      const diffMins = Math.floor(diffMs / 60000);
-      let timeText = "Installed just now";
-
-      if (diffMins >= 1440) timeText = `Installed about ${Math.floor(diffMins / 1440)} day(s) ago`;
-      else if (diffMins >= 60) timeText = `Installed about ${Math.floor(diffMins / 60)} hour(s) ago`;
-      else if (diffMins > 0) timeText = `Installed about ${diffMins} minute(s) ago`;
-
-      document.getElementById('detail-installed-time').innerHTML = `<i class="fa-regular fa-clock"></i> ${timeText}`;
-    }
-
-    function closeDetailScreen() { document.getElementById('detail-screen').classList.add('hidden'); }
-
-    function submitDetailScreenshot() {
-      const file = document.getElementById('detail-screenshot-input').files[0];
-      if (!file) return alert("Select screenshot proof.");
-      document.getElementById('detail-upload-box').classList.add('hidden');
-      document.getElementById('detail-pending-box').classList.remove('hidden');
-      alert("✓ Screenshot submitted! Under admin review.");
-    }
-
-    function claimDetailMilestone(coins, btn) {
-      currentUser.coins += coins;
-      renderUI();
-      btn.innerText = "Claimed ✓";
-      btn.disabled = true;
-      alert(`🎉 +${coins} Coins added to your balance!`);
-    }
-
-    function finishOfferAndReset() {
-      currentUser.coins += 1000;
-      currentUser.diamonds = 0;
-      currentUser.completedOffers = (currentUser.completedOffers || 0) + 1;
-      renderUI();
-      alert("🎉 Super Offer Completed! 1,000 Coins added to wallet. Diamonds reset to 0/25 for your next offer!");
-      closeDetailScreen();
-      apiRequest('/api/offer/claim-reward', 'POST');
-    }
-
+    // ================= WALLET WITHDRAWAL (TRIGGERS NTFY) =================
     async function submitWithdrawal(method, amountRs, coinsRequired) {
       if (currentUser.coins < coinsRequired) {
         return alert(`❌ Insufficient Coins! You need ${coinsRequired.toLocaleString()} Coins for ₹${amountRs}.`);
@@ -846,6 +758,7 @@
       const dest = prompt(`Enter ${method.includes('UPI') ? 'UPI ID (e.g. name@okaxis)' : 'Email for Google Play Code'}:`);
       if (!dest) return;
       currentUser.coins -= coinsRequired;
+      localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       alert(`✅ Payout of ₹${amountRs} submitted to ${dest}!\n${coinsRequired.toLocaleString()} coins deducted from your balance.`);
       apiRequest('/api/wallet/withdraw', 'POST', { method, amountRs, coinsRequired, destination: dest });
@@ -861,20 +774,14 @@
       apiRequest('/api/support/report', 'POST', { subject: s, description: d });
     }
 
-    function showAdCountdown(sec, cb) {
-      const ad = document.getElementById('ad-simulator');
-      ad.classList.remove('hidden');
-      let rem = sec;
-      document.getElementById('ad-timer').innerText = `Reward unlocks in ${rem}s...`;
-      const t = setInterval(() => {
-        rem--;
-        if (rem > 0) document.getElementById('ad-timer').innerText = `Reward unlocks in ${rem}s...`;
-        else { clearInterval(t); ad.classList.add('hidden'); cb(); }
-      }, 1000);
+    function handleSignOut() {
+      if (confirm("Sign out?")) {
+        localStorage.clear();
+        location.reload();
+      }
     }
 
-    function handleSignOut() { if (confirm("Sign out?")) { localStorage.clear(); location.reload(); } }
-
+    // Startup Initializer
     window.addEventListener('load', () => {
       const saved = localStorage.getItem('quizpay_user');
       if (saved) {
@@ -888,4 +795,4 @@
     });
   </script>
 </body>
-</html>                                                                                                                                                                                                          </div>
+</html>
