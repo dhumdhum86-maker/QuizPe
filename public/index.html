@@ -6,7 +6,6 @@
   <title>QuizPay - Super Offer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Official Google Identity Services SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>body{-webkit-tap-highlight-color:transparent;user-select:none;}.no-sb::-webkit-scrollbar{display:none;}</style>
 </head>
@@ -34,7 +33,7 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto no-sb p-4 pb-20">
 
-      <!-- ================= TAB 1: HOME (ONLY SUPER OFFER) ================= -->
+      <!-- ================= TAB 1: HOME ================= -->
       <div id="tab-home" class="space-y-4">
         <div class="flex justify-between items-center">
           <div><p class="text-[10px] font-bold text-slate-400 uppercase">Welcome back</p><h2 id="home-username" class="text-lg font-black text-slate-800">User 👋</h2></div>
@@ -63,6 +62,7 @@
           <button onclick="testSetDiamonds(25)" class="text-[10px] text-indigo-700 font-bold bg-indigo-50 border border-indigo-200 px-2 py-1 rounded active:scale-95">+25 💎 (Test)</button>
         </div>
 
+        <!-- Super Offer Card Only -->
         <div onclick="startSuperOfferFlow()" class="cursor-pointer p-5 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/70 border-2 border-indigo-300 shadow-md flex justify-between items-center active:scale-95 transition">
           <div class="space-y-1">
             <div class="flex items-center gap-2">
@@ -70,11 +70,9 @@
               <span class="text-xs font-extrabold text-amber-500">🎁 Guaranteed 1,000 Coins</span>
             </div>
             <h4 class="font-black text-xl text-indigo-950">Install & Earn 1,000 Coins</h4>
-            <p class="text-xs text-slate-500">Play Number Quiz Inside • Collect 25 💎 to Unlock</p>
+            <p class="text-xs text-slate-500">Number Captchas Inside • Collect 25 💎 to Unlock</p>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md">
-            <i class="fa-solid fa-play"></i>
-          </div>
+          <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md"><i class="fa-solid fa-play"></i></div>
         </div>
       </div>
 
@@ -123,8 +121,8 @@
 
         <div class="p-4 rounded-2xl border bg-white shadow-sm space-y-2.5">
           <span class="text-xs font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Report an Issue</span>
-          <input id="report-subject" type="text" placeholder="Subject (e.g. Withdrawal pending)" class="w-full p-2.5 rounded-xl border text-xs outline-none focus:ring-1 focus:ring-indigo-500" />
-          <textarea id="report-desc" rows="3" placeholder="Describe the issue in detail..." class="w-full p-2.5 rounded-xl border text-xs outline-none focus:ring-1 focus:ring-indigo-500"></textarea>
+          <input id="report-subject" type="text" placeholder="Subject (e.g. Withdrawal pending)" class="w-full p-2.5 rounded-xl border text-xs outline-none" />
+          <textarea id="report-desc" rows="3" placeholder="Describe the issue in detail..." class="w-full p-2.5 rounded-xl border text-xs outline-none"></textarea>
           <button onclick="submitReport()" class="w-full py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-xl">Submit Report</button>
         </div>
 
@@ -133,7 +131,7 @@
 
     </main>
 
-    <!-- ================= SCREEN 2: NUMBER CAPTCHA QUIZ INSIDE SUPER OFFER ================= -->
+    <!-- ================= SCREEN 2: NUMBER CAPTCHA QUIZ ================= -->
     <div id="quiz-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col justify-between">
       <div class="px-5 pt-4 pb-3 flex justify-between items-center bg-white border-b sticky top-0 z-10">
         <button onclick="closeQuizScreen()" class="text-slate-700 text-lg"><i class="fa-solid fa-arrow-left"></i></button>
@@ -149,14 +147,16 @@
       </div>
 
       <div class="flex-1 overflow-y-auto no-sb p-5 flex flex-col justify-between space-y-4">
+        <!-- 0/2 Dots -->
         <div class="text-center pt-2">
           <div class="inline-flex items-center gap-1.5 text-xs font-black text-slate-400">
-            <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
-            <span id="dot-2" class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+            <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors"></span>
+            <span id="dot-2" class="w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors"></span>
             <span id="quiz-sub-counter" class="ml-1 text-slate-600">0/2</span>
           </div>
         </div>
 
+        <!-- 4-Digit Card -->
         <div class="w-64 h-52 mx-auto rounded-3xl bg-gradient-to-b from-indigo-50/80 via-blue-50/60 to-purple-50/80 border border-indigo-100 shadow-sm flex items-center justify-center relative overflow-hidden">
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-4 left-8"></div>
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-8 right-12"></div>
@@ -168,6 +168,7 @@
           <div id="captcha-options-grid" class="grid grid-cols-2 gap-3 max-w-xs mx-auto"></div>
         </div>
 
+        <!-- 25 Diamond Progress Section -->
         <div class="space-y-1.5 max-w-xs mx-auto w-full pt-2">
           <div class="flex justify-between items-center text-xs font-black">
             <span class="text-slate-800">Super Offer</span>
@@ -182,7 +183,7 @@
           <p class="text-center text-[11px] font-medium text-slate-500 pt-1">Complete 25 captchas for Guaranteed 1000 Coins!</p>
         </div>
 
-        <button onclick="alert(`Completed offers: ${currentUser.completedOffers || 0}`)" class="w-full max-w-xs mx-auto py-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm flex items-center justify-center gap-2">
+        <button onclick="showToast(`Completed offers: ${currentUser.completedOffers || 0}`)" class="w-full max-w-xs mx-auto py-3 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-sm flex items-center justify-center gap-2">
           <i class="fa-solid fa-gift"></i> My Offers <span id="quiz-bottom-offers-count" class="bg-indigo-600 text-white rounded-full px-2 py-0.5 text-xs">0</span>
         </button>
       </div>
@@ -313,10 +314,6 @@
           <p class="text-[10px] text-red-600">⚠️ Don't delete the installed app for at least 3 hours.</p>
         </div>
 
-        <button onclick="alert('Tutorial: Watch ad -> Install app -> Use 2 mins!')" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-xs flex items-center justify-center gap-2">
-          <i class="fa-solid fa-play"></i> How to Complete - Watch Tutorial
-        </button>
-
         <button id="so-action-btn" onclick="handleSuperOfferAction()" class="w-full py-3.5 rounded-xl bg-indigo-600 text-white font-black text-xs shadow-md">
           Start Offer
         </button>
@@ -326,7 +323,7 @@
     <!-- Dynamic AdMob Modal -->
     <div id="dynamic-ad-modal" class="hidden absolute inset-0 bg-slate-900 z-50 flex flex-col justify-between p-6 text-white text-center">
       <div class="flex justify-between items-center text-xs text-slate-400">
-        <span class="bg-slate-800 px-2.5 py-1 rounded">AdMob Sponsored</span>
+        <span class="bg-slate-800 px-2.5 py-1 rounded">AdMob / Unity Sponsored</span>
         <span id="admob-timer">Reward in 8s</span>
       </div>
       <div class="space-y-4 my-auto">
@@ -356,6 +353,9 @@
       <p id="ps-status-text" class="text-center text-xs font-bold text-slate-600">Downloading (0%)...</p>
     </div>
 
+    <!-- Floating Toast Container -->
+    <div id="app-toast" class="hidden absolute top-5 inset-x-5 bg-slate-900/90 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xl z-50 text-center transition-opacity"></div>
+
     <!-- Navigation -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t flex justify-around items-center px-4 z-20">
       <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-indigo-600 w-16"><i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
@@ -363,7 +363,7 @@
       <button onclick="switchTab('profile')" id="nav-btn-profile" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-user text-lg"></i><span class="text-[10px] font-bold mt-1">Profile</span></button>
     </nav>
 
-    <!-- Google Login Modal (ONE SINGLE BUTTON) -->
+    <!-- Google Login Modal (ONE SINGLE OFFICIAL BUTTON) -->
     <div id="login-modal" class="hidden absolute inset-0 bg-white z-50 flex flex-col justify-center px-6 space-y-5">
       <div class="text-center space-y-2">
         <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl shadow-xl shadow-indigo-100"><i class="fa-solid fa-bolt"></i></div>
@@ -378,6 +378,8 @@
   <script>
     const GOOGLE_CLIENT_ID = "1078470108682-mfuoslrtdn9l4fjp201663m3c0umb5ir.apps.googleusercontent.com";
     const ADMOB_REWARDED_AD_UNIT_ID = "ca-app-pub-5787453615296015/1309961555";
+    const UNITY_GAME_ID = "800428517";
+    const UNITY_PLACEMENT_ID = "BP_Rewarded_Android";
 
     let currentUser = { name: "User", email: "user@gmail.com", avatar: "", coins: 0, diamonds: 0, completedOffers: 0 };
     let quizSubCount = 0;
@@ -391,6 +393,13 @@
     if (!deviceId) {
       deviceId = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
       localStorage.setItem('quizpay_device_id', deviceId);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('app-toast');
+      t.innerText = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 2200);
     }
 
     async function apiRequest(ep, method = 'GET', body = null) {
@@ -425,7 +434,7 @@
         const res = await apiRequest('/api/auth/login', 'POST', { name: payload.name, email: payload.email, avatar: payload.picture, deviceId });
 
         if (res && res.banned) {
-          alert(res.message);
+          showToast(res.message);
           return;
         }
 
@@ -488,11 +497,11 @@
       renderUI();
       document.getElementById('checkin-btn').innerText = "Claimed ✓";
       document.getElementById('checkin-btn').disabled = true;
-      alert("🎉 +50 Coins claimed!");
+      showToast("🎉 +50 Coins claimed!");
       apiRequest('/api/daily-checkin', 'POST');
     }
 
-    // ================= SUPER OFFER ENTRY =================
+    // ================= SUPER OFFER FLOW =================
     function startSuperOfferFlow() {
       if (currentUser.diamonds < 25) {
         openQuizScreen();
@@ -559,19 +568,17 @@
         updateQuizCounters();
 
         if (quizSubCount === 1) {
-          alert("1/2 Quiz Done, Play 1 More!");
           generateCaptchaRound();
         } else if (quizSubCount === 2) {
           quizSubCount = 0;
           updateQuizCounters();
-          // Open Congratulations screen
           document.getElementById('cg-gift').innerText = currentUser.completedOffers || 0;
           document.getElementById('cg-diamond').innerText = currentUser.diamonds;
           document.getElementById('cg-unlock-text').innerText = `${currentUser.diamonds}/25 gems to unlock Super Offer`;
           document.getElementById('congrats-screen').classList.remove('hidden');
         }
       } else {
-        alert("Incorrect number! Please try again.");
+        showToast("Incorrect number! Please try again.");
       }
     }
 
@@ -586,8 +593,7 @@
       btn.innerText = `Watching Ad (${adsWatchedChain + 1}/3)...`;
       btn.disabled = true;
 
-      // Real AdMob bridge in APK, direct clean timer in web
-      callAdMobAd(() => {
+      callAdBridge(() => {
         adsWatchedChain++;
 
         if (adsWatchedChain < 3) {
@@ -601,11 +607,11 @@
           renderUI();
           updateQuizCounters();
           document.getElementById('congrats-screen').classList.add('hidden');
-          alert("💎 You Got 1 Diamond!");
+          showToast("💎 +1 Diamond claimed!");
 
           if (currentUser.diamonds >= 25) {
             closeQuizScreen();
-            startSuperOfferFlow(); // Open unlock screen
+            startSuperOfferFlow();
           } else {
             generateCaptchaRound();
           }
@@ -614,17 +620,16 @@
         adsWatchedChain = 0;
         btn.innerText = "Collect Gem";
         btn.disabled = false;
-        alert("Ad closed early! No diamond awarded.");
+        showToast("Ad skipped! No diamond awarded.");
       });
     }
 
-    function callAdMobAd(onCompleted, onSkipped) {
+    function callAdBridge(onCompleted, onSkipped) {
       if (window.Android && window.Android.showRewardedAd) {
-        window.Android.showRewardedAd(ADMOB_REWARDED_AD_UNIT_ID);
+        window.Android.showRewardedAd(ADMOB_REWARDED_AD_UNIT_ID, UNITY_PLACEMENT_ID);
         window.onAdMobReward = onCompleted;
         window.onAdMobDismissed = onSkipped;
       } else {
-        // Clean direct timer without fake black screen
         setTimeout(onCompleted, 2500);
       }
     }
@@ -634,7 +639,7 @@
       localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
       if (!document.getElementById('quiz-screen').classList.contains('hidden')) updateQuizCounters();
-      alert(`💎 Diamonds set to ${qty}!`);
+      showToast(`💎 Diamonds set to ${qty}!`);
     }
 
     // ================= DYNAMIC SUPER OFFER INSTALL FLOW =================
@@ -657,7 +662,6 @@
 
         setTimeout(() => {
           btn.disabled = false;
-          // Serves whatever ad AdMob delivers dynamically
           document.getElementById('dynamic-ad-modal').classList.remove('hidden');
 
           let sec = 8;
@@ -743,7 +747,7 @@
           currentUser.completedOffers = (currentUser.completedOffers || 0) + 1;
           localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
           renderUI();
-          alert("🎉 Super Offer Completed! 1,000 Coins added to your wallet. Diamonds reset to 0/25 for your next offer!");
+          showToast("🎉 Super Offer Completed! 1,000 Coins added!");
           closeSuperOfferScreen();
           apiRequest('/api/offer/claim-reward', 'POST');
         }
@@ -753,32 +757,31 @@
     // ================= WALLET WITHDRAWAL (TRIGGERS NTFY) =================
     async function submitWithdrawal(method, amountRs, coinsRequired) {
       if (currentUser.coins < coinsRequired) {
-        return alert(`❌ Insufficient Coins! You need ${coinsRequired.toLocaleString()} Coins for ₹${amountRs}.`);
+        showToast(`❌ Insufficient Coins! You need ${coinsRequired.toLocaleString()} Coins for ₹${amountRs}.`);
+        return;
       }
       const dest = prompt(`Enter ${method.includes('UPI') ? 'UPI ID (e.g. name@okaxis)' : 'Email for Google Play Code'}:`);
       if (!dest) return;
       currentUser.coins -= coinsRequired;
       localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
       renderUI();
-      alert(`✅ Payout of ₹${amountRs} submitted to ${dest}!\n${coinsRequired.toLocaleString()} coins deducted from your balance.`);
+      showToast(`✅ Payout of ₹${amountRs} submitted!`);
       apiRequest('/api/wallet/withdraw', 'POST', { method, amountRs, coinsRequired, destination: dest });
     }
 
     async function submitReport() {
       const s = document.getElementById('report-subject').value.trim();
       const d = document.getElementById('report-desc').value.trim();
-      if (!s || !d) return alert("Please fill in subject and description.");
-      alert("📨 Issue submitted to admin! We will investigate.");
+      if (!s || !d) return showToast("Please fill in subject and description.");
+      showToast("📨 Issue submitted to admin!");
       document.getElementById('report-subject').value = '';
       document.getElementById('report-desc').value = '';
       apiRequest('/api/support/report', 'POST', { subject: s, description: d });
     }
 
     function handleSignOut() {
-      if (confirm("Sign out?")) {
-        localStorage.clear();
-        location.reload();
-      }
+      localStorage.clear();
+      location.reload();
     }
 
     // Startup Initializer
