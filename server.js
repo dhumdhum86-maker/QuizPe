@@ -91,17 +91,23 @@ app.get('/api/user', (req, res) => {
   res.json({ success: true, user });
 });
 
-// 4. Daily Streak Bonus
+// 4. Daily Streak Bonus (Strict: 1 Claim per Calendar Day)
 app.post('/api/daily-checkin', (req, res) => {
   const email = req.headers['x-user-email'];
   const db = loadDB();
   const user = db.users[email];
   if (!user) return res.status(404).json({ success: false });
 
+  const today = new Date().toDateString();
+
+  if (user.lastCheckinDate === today) {
+    return res.status(400).json({ success: false, message: "Already claimed today! Come back tomorrow." });
+  }
+
   user.coins += 50;
-  user.dailyClaimed = true;
+  user.lastCheckinDate = today;
   saveDB(db);
-  res.json({ success: true, coins: user.coins });
+  res.json({ success: true, coins: user.coins, lastCheckinDate: today });
 });
 
 // 5. Complete Super Offer (1,000 Coins Reward)
