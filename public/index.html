@@ -70,7 +70,7 @@
               <span class="text-xs font-extrabold text-amber-500">🎁 Guaranteed 1,000 Coins</span>
             </div>
             <h4 class="font-black text-xl text-indigo-950">Install & Earn 1,000 Coins</h4>
-            <p class="text-xs text-slate-500">Number Captchas Inside • Collect 25 💎 to Unlock</p>
+            <p class="text-xs text-slate-500">Play Number Quiz Inside • Collect 25 💎 to Unlock</p>
           </div>
           <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md"><i class="fa-solid fa-play"></i></div>
         </div>
@@ -147,7 +147,6 @@
       </div>
 
       <div class="flex-1 overflow-y-auto no-sb p-5 flex flex-col justify-between space-y-4">
-        <!-- 0/2 Dots -->
         <div class="text-center pt-2">
           <div class="inline-flex items-center gap-1.5 text-xs font-black text-slate-400">
             <span id="dot-1" class="w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors"></span>
@@ -156,7 +155,6 @@
           </div>
         </div>
 
-        <!-- 4-Digit Card -->
         <div class="w-64 h-52 mx-auto rounded-3xl bg-gradient-to-b from-indigo-50/80 via-blue-50/60 to-purple-50/80 border border-indigo-100 shadow-sm flex items-center justify-center relative overflow-hidden">
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-4 left-8"></div>
           <div class="w-2 h-2 rounded-full bg-indigo-300/40 absolute top-8 right-12"></div>
@@ -168,7 +166,6 @@
           <div id="captcha-options-grid" class="grid grid-cols-2 gap-3 max-w-xs mx-auto"></div>
         </div>
 
-        <!-- 25 Diamond Progress Section -->
         <div class="space-y-1.5 max-w-xs mx-auto w-full pt-2">
           <div class="flex justify-between items-center text-xs font-black">
             <span class="text-slate-800">Super Offer</span>
@@ -189,7 +186,7 @@
       </div>
     </div>
 
-    <!-- ================= SCREEN 2B: CONGRATULATIONS INTERMEDIATE SCREEN ================= -->
+    <!-- ================= SCREEN 2B: CONGRATULATIONS SCREEN ================= -->
     <div id="congrats-screen" class="hidden absolute inset-0 bg-slate-50 z-40 flex flex-col justify-between p-6 text-center">
       <div class="flex justify-between items-center">
         <button onclick="document.getElementById('congrats-screen').classList.add('hidden')" class="text-slate-700 text-lg"><i class="fa-solid fa-arrow-left"></i></button>
@@ -247,7 +244,7 @@
       </div>
     </div>
 
-    <!-- ================= SCREEN 4: SUPER OFFER TASK & INSTALL FLOW ================= -->
+    <!-- ================= SCREEN 4: SUPER OFFER TASK & INSTALL ================= -->
     <div id="super-offer-screen" class="hidden absolute inset-0 bg-white z-40 flex flex-col">
       <div class="px-5 pt-4 pb-3 flex justify-between items-center border-b">
         <button onclick="closeSuperOfferScreen()" class="text-slate-700"><i class="fa-solid fa-arrow-left"></i></button>
@@ -353,10 +350,10 @@
       <p id="ps-status-text" class="text-center text-xs font-bold text-slate-600">Downloading (0%)...</p>
     </div>
 
-    <!-- Floating Toast Container -->
+    <!-- Floating Clean Toast Container -->
     <div id="app-toast" class="hidden absolute top-5 inset-x-5 bg-slate-900/90 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xl z-50 text-center transition-opacity"></div>
 
-    <!-- Navigation -->
+    <!-- Bottom Navigation Bar -->
     <nav class="absolute bottom-0 left-0 right-0 h-16 bg-white border-t flex justify-around items-center px-4 z-20">
       <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center text-indigo-600 w-16"><i class="fa-solid fa-house text-lg"></i><span class="text-[10px] font-bold mt-1">Home</span></button>
       <button onclick="switchTab('wallet')" id="nav-btn-wallet" class="flex flex-col items-center text-slate-400 w-16"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] font-bold mt-1">Wallet</span></button>
@@ -388,7 +385,6 @@
     let dynamicAppInstalled = false;
     let superOfferStage = 'initial';
 
-    // Unique Device Fingerprint (1 Device = 1 Account Lock)
     let deviceId = localStorage.getItem('quizpay_device_id');
     if (!deviceId) {
       deviceId = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
@@ -413,7 +409,6 @@
       }
     }
 
-    // Google One Tap & Single Button Initializer
     function initGoogleAuth() {
       if (typeof google === 'undefined') return;
       google.accounts.id.initialize({
@@ -428,6 +423,7 @@
       google.accounts.id.prompt();
     }
 
+    // Google Sign-In with Server Database Sync
     async function handleGoogleSignInResponse(response) {
       try {
         const payload = JSON.parse(decodeURIComponent(escape(window.atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))));
@@ -438,9 +434,15 @@
           return;
         }
 
-        currentUser.name = payload.name || "User";
-        currentUser.email = payload.email;
-        currentUser.avatar = payload.picture || "";
+        // Restores actual saved balance from server
+        if (res && res.success && res.user) {
+          currentUser = res.user;
+        } else {
+          currentUser.name = payload.name || "User";
+          currentUser.email = payload.email;
+          currentUser.avatar = payload.picture || "";
+        }
+
         localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
         document.getElementById('login-modal').classList.add('hidden');
         renderUI();
@@ -582,7 +584,7 @@
       }
     }
 
-    // ================= 3 ADS = 1 DIAMOND FLOW =================
+    // 3 Ads = 1 Diamond Chain
     function startThreeAdChain() {
       adsWatchedChain = 0;
       playNextAdInChain();
@@ -642,7 +644,6 @@
       showToast(`💎 Diamonds set to ${qty}!`);
     }
 
-    // ================= DYNAMIC SUPER OFFER INSTALL FLOW =================
     function resetSuperOfferUI() {
       superOfferStage = 'initial';
       dynamicAppInstalled = false;
@@ -754,7 +755,6 @@
       }, 500);
     }
 
-    // ================= WALLET WITHDRAWAL (TRIGGERS NTFY) =================
     async function submitWithdrawal(method, amountRs, coinsRequired) {
       if (currentUser.coins < coinsRequired) {
         showToast(`❌ Insufficient Coins! You need ${coinsRequired.toLocaleString()} Coins for ₹${amountRs}.`);
@@ -784,13 +784,18 @@
       location.reload();
     }
 
-    // Startup Initializer
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
       const saved = localStorage.getItem('quizpay_user');
       if (saved) {
         currentUser = JSON.parse(saved);
-        if (!currentUser.completedOffers) currentUser.completedOffers = 0;
         renderUI();
+
+        const data = await apiRequest('/api/user');
+        if (data && data.success && data.user) {
+          currentUser = data.user;
+          localStorage.setItem('quizpay_user', JSON.stringify(currentUser));
+          renderUI();
+        }
       } else {
         document.getElementById('login-modal').classList.remove('hidden');
         setTimeout(initGoogleAuth, 400);
