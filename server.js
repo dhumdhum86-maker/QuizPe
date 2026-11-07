@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,14 +13,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
-    const initialData = { users: {}, deviceLocks: {}, usedImageHashes: [], withdrawals: [], reports: [] };
+    const initialData = { users: {}, deviceLocks: {}, withdrawals: [], reports: [] };
     fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
     return initialData;
   }
   try {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch (e) {
-    return { users: {}, deviceLocks: {}, usedImageHashes: [], withdrawals: [], reports: [] };
+    return { users: {}, deviceLocks: {}, withdrawals: [], reports: [] };
   }
 }
 
@@ -134,7 +133,7 @@ app.post('/api/wallet/withdraw', (req, res) => {
   db.withdrawals.push({ email, method, amountRs, coinsDeducted: coinsRequired, destination, date: new Date().toISOString() });
   saveDB(db);
 
-  // Send Alert to your ntfy app
+  // Send Alert to ntfy app
   fetch('https://ntfy.sh/quizpe_alerts_7891', {
     method: 'POST',
     body: `🚨 NEW WITHDRAWAL REQUEST!\n\n👤 User: ${email}\n💰 Method: ${method}\n💵 Amount: ₹${amountRs}\n🏦 Send To: ${destination}`
